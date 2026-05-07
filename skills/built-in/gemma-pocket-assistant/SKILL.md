@@ -2,7 +2,7 @@
 name: gemma-pocket-assistant
 description: An on-device AI utility assistant. Can query Wikipedia to summarize any topic, and generate QR codes for any URL or text — all running locally with Gemma.
 metadata:
-  homepage: https://saikirantechy.github.io/gemma-pocket-assistant
+  homepage: https://saikirantechy.github.io/Gemma-4-blr
 ---
 
 # Gemma Pocket Assistant

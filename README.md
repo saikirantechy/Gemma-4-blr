@@ -55,7 +55,7 @@ gemma-pocket-assistant/
 2. Tap **"Skills"** chip → **(+)** → **"Load skill from URL"**
 3. Enter:
    ```
-   https://saikirantechy.github.io/gemma-pocket-assistant/skills/built-in/gemma-pocket-assistant
+   https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-pocket-assistant
    ```
 4. Confirm — the skill is now active ✅
 
