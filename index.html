@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gemma Pocket Assistant — On-Device AI Utility</title>
+  <meta name="description" content="An on-device AI utility assistant powered by Gemma + LiteRT-LM with Wikipedia search & QR generation." />
+  <meta property="og:title" content="Gemma Pocket Assistant" />
+  <meta property="og:description" content="On-device AI utility powered by Gemma + LiteRT-LM. Wikipedia search & QR generation on Android." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #060b18;
+      --surface:  #0d1526;
+      --card:     #111d35;
+      --border:   rgba(99, 179, 237, 0.12);
+      --glow:     rgba(66, 133, 244, 0.25);
+      --blue:     #4285f4;
+      --cyan:     #38bdf8;
+      --orange:   #fb923c;
+      --green:    #4ade80;
+      --text:     #e2e8f0;
+      --muted:    #94a3b8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Animated background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(66,133,244,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(56,189,248,0.08) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 80px 0 60px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(66,133,244,0.12);
+      border: 1px solid rgba(66,133,244,0.3);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 13px;
+      color: var(--cyan);
+      font-weight: 500;
+      margin-bottom: 28px;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #fff 30%, var(--cyan) 70%, var(--blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+      animation: fadeDown 0.7s ease 0.1s both;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+      animation: fadeDown 0.7s ease 0.2s both;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeDown 0.7s ease 0.3s both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #fff;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(66,133,244,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(66,133,244,0.5); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text);
+      font-weight: 500;
+      font-size: 15px;
+      padding: 13px 26px;
+      border-radius: 12px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--cyan); background: rgba(56,189,248,0.06); transform: translateY(-2px); }
+
+    /* ── Feature Cards ── */
+    .section { padding: 60px 0; }
+    .section-title {
+      text-align: center;
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 40px;
+      background: linear-gradient(90deg, #fff, var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 24px;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 0%, var(--glow), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .card:hover { transform: translateY(-4px); border-color: rgba(66,133,244,0.35); box-shadow: 0 12px 40px rgba(66,133,244,0.15); }
+    .card:hover::before { opacity: 1; }
+
+    .card-icon { font-size: 2rem; margin-bottom: 14px; }
+    .card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }
+    .card p  { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── Demo prompts ── */
+    .prompts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 600px) { .prompts-grid { grid-template-columns: 1fr; } }
+
+    .prompt-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .prompt-box h3 { font-size: 0.95rem; font-weight: 600; color: var(--cyan); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .prompt-box ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .prompt-box li {
+      font-size: 0.85rem;
+      color: var(--muted);
+      background: rgba(255,255,255,0.04);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-family: 'Inter', monospace;
+      border-left: 2px solid var(--blue);
+    }
+
+    /* ── Tech stack pills ── */
+    .pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .pill {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .pill:hover { border-color: var(--cyan); background: rgba(56,189,248,0.08); }
+
+    /* ── How it works ── */
+    .flow {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 32px;
+    }
+    .flow-steps { display: flex; flex-direction: column; gap: 0; }
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .flow-step:last-child { border-bottom: none; }
+    .step-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+    }
+    .step-text h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+    .step-text p  { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── Skill URL box ── */
+    .url-box {
+      background: var(--card);
+      border: 1px solid rgba(66,133,244,0.3);
+      border-radius: 14px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .url-box code {
+      font-size: 0.82rem;
+      color: var(--cyan);
+      word-break: break-all;
+      flex: 1;
+    }
+    .copy-btn {
+      background: rgba(66,133,244,0.15);
+      border: 1px solid rgba(66,133,244,0.3);
+      color: var(--cyan);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .copy-btn:hover { background: rgba(66,133,244,0.28); }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 50px 0 40px;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .footer-links { display: flex; gap: 24px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+
+    /* ── Animations ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Divider ── */
+    .divider { height: 1px; background: var(--border); margin: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <div class="container">
+    <section class="hero">
+      <div class="badge">🤖 Google AI Edge Gallery — Community Build</div>
+      <h1>Gemma Pocket<br/>Assistant</h1>
+      <p>An on-device AI utility assistant powered by <strong>Gemma + LiteRT-LM</strong>. Wikipedia intelligence & QR generation — fully offline, privacy-first, running on your Android device.</p>
+      <div class="hero-btns">
+        <a id="github-btn" class="btn-primary" href="https://github.com/saikirantechy/gemma-pocket-assistant" target="_blank">
+          ⭐ View on GitHub
+        </a>
+        <a id="install-btn" class="btn-secondary" href="#install">
+          📱 Install Skill
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Features -->
+  <div class="container">
+    <section class="section reveal">
+      <div class="section-title">✨ What it does</div>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">🔎</div>
+          <h3>Wikipedia Search</h3>
+          <p>Ask about any person, place, or event. Gemma queries Wikipedia and summarizes the result locally — no cloud inference needed.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📱</div>
+          <h3>QR Code Generation</h3>
+          <p>Turn any URL or text into a scannable QR code instantly. Auto-prefixes https:// and renders the image right in your chat.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h3>Offline-First AI</h3>
+          <p>Inference runs entirely on-device via LiteRT-LM. No latency from cloud round-trips. Works on any Android with AI Edge Gallery.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔒</div>
+          <h3>Privacy-Focused</h3>
+          <p>Your prompts never leave your device. The Gemma model handles all reasoning locally — only tool calls fetch external data.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Demo Prompts -->
+  <div class="container">
+    <section class="section reveal">
+      <div class="section-title">🎤 Try These Prompts</div>
+      <div class="prompts-grid">
+        <div class="prompt-box">
+          <h3>🔎 Wikipedia</h3>
+          <ul>
+            <li>Who is Sundar Pichai?</li>
+            <li>Tell me about Bengaluru</li>
+            <li>What is LiteRT-LM?</li>
+            <li>Explain quantum computing</li>
+          </ul>
+        </div>
+        <div class="prompt-box">
+          <h3>📱 QR Codes</h3>
+          <ul>
+            <li>Generate QR for sktnexus.com</li>
+            <li>Create a QR for my GitHub</li>
+            <li>Make QR for github.com/google-ai-edge/gallery</li>
+            <li>QR code for my LinkedIn profile</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- How it works -->
+  <div class="container">
+    <section class="section reveal">
+      <div class="section-title">⚙️ How It Works</div>
+      <div class="flow">
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="step-num">1</div>
+            <div class="step-text">
+              <h4>User sends a prompt</h4>
+              <p>You type naturally — "Who is Sundar Pichai?" or "Generate QR for sktnexus.com"</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">2</div>
+            <div class="step-text">
+              <h4>Gemma reads SKILL.md and routes</h4>
+              <p>The on-device model detects the intent and calls the correct tool: <code>wikipedia.html</code> or <code>qrcode.html</code></p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">3</div>
+            <div class="step-text">
+              <h4>JS skill executes in hidden WebView</h4>
+              <p>Wikipedia: fuzzy search + infobox parse via REST API. QR: qrcodejs CDN renders to canvas → base64 PNG.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">4</div>
+            <div class="step-text">
+              <h4>Gemma summarizes and responds</h4>
+              <p>The result is passed back to the model, which delivers a clean 2-3 sentence answer — or renders the QR image directly in chat.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Install -->
+  <div class="container" id="install">
+    <section class="section reveal">
+      <div class="section-title">📲 Install the Skill</div>
+      <p style="text-align:center;color:var(--muted);margin-bottom:28px;font-size:0.95rem;">Open AI Edge Gallery → Agent Skills → Skills chip → (+) → Load from URL</p>
+      <div class="url-box">
+        <code id="skill-url">https://saikirantechy.github.io/gemma-pocket-assistant/skills/built-in/gemma-pocket-assistant</code>
+        <button class="copy-btn" id="copy-btn" onclick="copyUrl()">Copy URL</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Tech Stack -->
+  <div class="container">
+    <section class="section reveal">
+      <div class="section-title">🛠 Tech Stack</div>
+      <div class="pills">
+        <span class="pill">🤖 Gemma</span>
+        <span class="pill">⚡ LiteRT-LM</span>
+        <span class="pill">📱 AI Edge Gallery</span>
+        <span class="pill">🌐 Wikipedia API</span>
+        <span class="pill">🔲 qrcodejs</span>
+        <span class="pill">🤖 Android WebView</span>
+        <span class="pill">🟨 JavaScript</span>
+        <span class="pill">🔒 On-Device Inference</span>
+      </div>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Footer -->
+  <div class="container">
+    <footer>
+      <p>Built with ❤️ by <a href="https://github.com/saikirantechy" target="_blank">Sai Kiran BK</a> for the Google AI Edge Gallery Hackathon</p>
+      <div class="footer-links">
+        <a href="https://github.com/saikirantechy/gemma-pocket-assistant" target="_blank">GitHub</a>
+        <a href="https://linkedin.com/in/saikiranbk" target="_blank">LinkedIn</a>
+        <a href="https://github.com/google-ai-edge/gallery" target="_blank">AI Edge Gallery</a>
+        <a href="https://ai.google.dev/gemma" target="_blank">Gemma</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Copy URL button
+    function copyUrl() {
+      const url = document.getElementById('skill-url').textContent;
+      navigator.clipboard.writeText(url).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => btn.textContent = 'Copy URL', 2000);
+      });
+    }
+  </script>
+</body>
+</html>
