@@ -33,7 +33,7 @@
 ---
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/google-ai-edge/gallery/main/.github/assets/hero.png" width="100%" />
+  <img src="https://raw.githubusercontent.com/saikirantechy/Gemma-4-blr/main/assets/hero.png" width="100%" />
 </p>
 ---
 
