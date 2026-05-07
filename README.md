@@ -1,13 +1,13 @@
 # Gemma Pocket Assistant 🚀
 
 > An on-device AI utility assistant powered by **Gemma + LiteRT-LM** using Google's AI Edge Gallery framework.
-<p align="center">
+
 [![Google AI Edge](https://img.shields.io/badge/Google%20AI%20Edge-Gallery-4285F4?style=flat-square&logo=google)](https://github.com/google-ai-edge/gallery)
 [![Gemma](https://img.shields.io/badge/Powered%20by-Gemma-orange?style=flat-square)](https://ai.google.dev/gemma)
 [![LiteRT-LM](https://img.shields.io/badge/Runtime-LiteRT--LM-green?style=flat-square)](https://ai.google.dev/edge/litert)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=flat-square)](LICENSE)
 
-
+<p align="center">
   <img src="https://img.shields.io/github/stars/saikirantechy/Gemma-4-blr?style=for-the-badge&color=yellow" />
   <img src="https://img.shields.io/github/forks/saikirantechy/Gemma-4-blr?style=for-the-badge" />
   <img src="https://img.shields.io/github/issues/saikirantechy/Gemma-4-blr?style=for-the-badge" />
@@ -188,7 +188,6 @@ Thanks to all the amazing open-source people contributing to this project!
 <a href="https://github.com/saikirantechy/Gemma-4-blr/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=saikirantechy/Gemma-4-blr" />
 </a>
-
 ---
 
 ## 👨‍💻 Author
