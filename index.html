@@ -3,490 +3,374 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gemma Pocket Assistant — On-Device AI Utility</title>
-  <meta name="description" content="An on-device AI utility assistant powered by Gemma + LiteRT-LM with Wikipedia search & QR generation." />
-  <meta property="og:title" content="Gemma Pocket Assistant" />
-  <meta property="og:description" content="On-device AI utility powered by Gemma + LiteRT-LM. Wikipedia search & QR generation on Android." />
+  <title>Gemma AI Edge Skill Collection</title>
+  <meta name="description" content="An open-source ecosystem of lightweight on-device AI skills powered by Gemma + LiteRT-LM." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:       #060b18;
-      --surface:  #0d1526;
-      --card:     #111d35;
-      --border:   rgba(99, 179, 237, 0.12);
-      --glow:     rgba(66, 133, 244, 0.25);
-      --blue:     #4285f4;
-      --cyan:     #38bdf8;
-      --orange:   #fb923c;
-      --green:    #4ade80;
-      --text:     #e2e8f0;
-      --muted:    #94a3b8;
+      --bg: #060b18; --surface: #0d1526; --card: #111d35;
+      --border: rgba(99,179,237,0.12); --glow: rgba(66,133,244,0.2);
+      --blue: #4285f4; --cyan: #38bdf8; --green: #4ade80;
+      --orange: #fb923c; --purple: #a78bfa; --pink: #f472b6;
+      --text: #e2e8f0; --muted: #94a3b8;
     }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* ── Animated background ── */
+    body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(66,133,244,0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(56,189,248,0.08) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
+      content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+      background: radial-gradient(ellipse 80% 50% at 15% 10%, rgba(66,133,244,0.13) 0%,transparent 60%),
+                  radial-gradient(ellipse 60% 40% at 85% 80%, rgba(56,189,248,0.08) 0%,transparent 60%);
     }
-
-    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+    .wrap { max-width:1000px; margin:0 auto; padding:0 20px; position:relative; z-index:1; }
 
     /* ── Hero ── */
-    .hero {
-      text-align: center;
-      padding: 80px 0 60px;
-    }
-
+    .hero { text-align:center; padding:72px 0 56px; }
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(66,133,244,0.12);
-      border: 1px solid rgba(66,133,244,0.3);
-      border-radius: 50px;
-      padding: 6px 16px;
-      font-size: 13px;
-      color: var(--cyan);
-      font-weight: 500;
-      margin-bottom: 28px;
-      animation: fadeDown 0.6s ease both;
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(66,133,244,0.12); border:1px solid rgba(66,133,244,0.3);
+      border-radius:50px; padding:6px 16px; font-size:13px; color:var(--cyan);
+      font-weight:500; margin-bottom:24px; animation:fadeDown .6s ease both;
     }
-
     .hero h1 {
-      font-size: clamp(2.4rem, 6vw, 3.8rem);
-      font-weight: 800;
-      line-height: 1.15;
-      background: linear-gradient(135deg, #fff 30%, var(--cyan) 70%, var(--blue) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 20px;
-      animation: fadeDown 0.7s ease 0.1s both;
+      font-size:clamp(2.2rem,6vw,3.6rem); font-weight:800; line-height:1.15;
+      background:linear-gradient(135deg,#fff 30%,var(--cyan) 65%,var(--blue) 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      margin-bottom:18px; animation:fadeDown .7s ease .1s both;
     }
+    .hero p { font-size:1.05rem; color:var(--muted); max-width:560px; margin:0 auto 36px; line-height:1.7; animation:fadeDown .7s ease .2s both; }
+    .hero-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; animation:fadeDown .7s ease .3s both; }
+    .btn-p {
+      display:inline-flex; align-items:center; gap:8px;
+      background:linear-gradient(135deg,var(--blue),var(--cyan)); color:#fff;
+      font-weight:600; font-size:14px; padding:13px 26px; border-radius:12px;
+      text-decoration:none; transition:transform .2s,box-shadow .2s;
+      box-shadow:0 4px 20px rgba(66,133,244,0.35);
+    }
+    .btn-p:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(66,133,244,0.5); }
+    .btn-s {
+      display:inline-flex; align-items:center; gap:8px;
+      background:transparent; color:var(--text); font-weight:500; font-size:14px;
+      padding:12px 24px; border-radius:12px; text-decoration:none;
+      border:1px solid var(--border); transition:border-color .2s,background .2s,transform .2s;
+    }
+    .btn-s:hover { border-color:var(--cyan); background:rgba(56,189,248,0.06); transform:translateY(-2px); }
 
-    .hero p {
-      font-size: 1.1rem;
-      color: var(--muted);
-      max-width: 560px;
-      margin: 0 auto 40px;
-      line-height: 1.7;
-      animation: fadeDown 0.7s ease 0.2s both;
-    }
+    /* ── Stats ── */
+    .stats { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; padding:0 0 56px; }
+    .stat { text-align:center; }
+    .stat-num { font-size:2rem; font-weight:800; background:linear-gradient(135deg,var(--cyan),var(--blue)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .stat-label { font-size:0.78rem; color:var(--muted); margin-top:4px; text-transform:uppercase; letter-spacing:.06em; }
 
-    .hero-btns {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-      animation: fadeDown 0.7s ease 0.3s both;
-    }
+    /* ── Section titles ── */
+    .divider { height:1px; background:var(--border); }
+    .sec { padding:56px 0; }
+    .sec-title { text-align:center; font-size:1.7rem; font-weight:700; margin-bottom:36px;
+      background:linear-gradient(90deg,#fff,var(--cyan)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(135deg, var(--blue), var(--cyan));
-      color: #fff;
-      font-weight: 600;
-      font-size: 15px;
-      padding: 14px 28px;
-      border-radius: 12px;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 24px rgba(66,133,244,0.35);
+    /* ── Skill Cards Grid ── */
+    .skills-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px; }
+    .skill-card {
+      background:var(--card); border:1px solid var(--border); border-radius:18px;
+      padding:24px; text-decoration:none; color:inherit;
+      transition:transform .25s,border-color .25s,box-shadow .25s; position:relative; overflow:hidden;
+      display:flex; flex-direction:column; gap:12px;
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(66,133,244,0.5); }
+    .skill-card::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(circle at 50% 0%,var(--glow),transparent 70%);
+      opacity:0; transition:opacity .3s;
+    }
+    .skill-card:hover { transform:translateY(-4px); border-color:rgba(66,133,244,0.4); box-shadow:0 12px 36px rgba(66,133,244,0.15); }
+    .skill-card:hover::before { opacity:1; }
+    .skill-header { display:flex; align-items:center; justify-content:space-between; }
+    .skill-icon { font-size:1.8rem; }
+    .skill-type-badge {
+      font-size:11px; font-weight:600; padding:3px 10px; border-radius:50px;
+      letter-spacing:.04em; text-transform:uppercase;
+    }
+    .type-js   { background:rgba(251,146,60,0.15); color:var(--orange); border:1px solid rgba(251,146,60,0.3); }
+    .type-text { background:rgba(74,222,128,0.15); color:var(--green);  border:1px solid rgba(74,222,128,0.3); }
+    .skill-name { font-size:1rem; font-weight:700; }
+    .skill-desc { font-size:0.84rem; color:var(--muted); line-height:1.55; flex:1; }
+    .skill-tags { display:flex; flex-wrap:wrap; gap:6px; }
+    .tag { font-size:11px; background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:6px; padding:3px 8px; color:var(--muted); }
+    .skill-footer { display:flex; align-items:center; justify-content:space-between; margin-top:4px; }
+    .install-link { font-size:12px; color:var(--cyan); font-weight:500; text-decoration:none; }
+    .install-link:hover { text-decoration:underline; }
 
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: transparent;
-      color: var(--text);
-      font-weight: 500;
-      font-size: 15px;
-      padding: 13px 26px;
-      border-radius: 12px;
-      text-decoration: none;
-      border: 1px solid var(--border);
-      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    /* ── Install section ── */
+    .install-box { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:28px; margin-bottom:20px; }
+    .install-box h3 { font-size:1rem; font-weight:600; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .install-box pre {
+      background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:10px;
+      padding:14px 16px; font-size:13px; overflow-x:auto; white-space:pre-wrap; word-break:break-all; color:#a5f3fc;
+      font-family:'Courier New',monospace;
     }
-    .btn-secondary:hover { border-color: var(--cyan); background: rgba(56,189,248,0.06); transform: translateY(-2px); }
-
-    /* ── Feature Cards ── */
-    .section { padding: 60px 0; }
-    .section-title {
-      text-align: center;
-      font-size: 1.9rem;
-      font-weight: 700;
-      margin-bottom: 40px;
-      background: linear-gradient(90deg, #fff, var(--cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .url-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .url-row code { font-size:13px; color:var(--cyan); flex:1; font-family:'Courier New',monospace; word-break:break-all; }
+    .copy-btn {
+      background:rgba(66,133,244,0.15); border:1px solid rgba(66,133,244,0.3); color:var(--cyan);
+      border-radius:8px; padding:7px 14px; font-size:12px; font-weight:500; cursor:pointer;
+      transition:background .2s; white-space:nowrap; flex-shrink:0;
     }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 28px 24px;
-      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
-      position: relative;
-      overflow: hidden;
-    }
-    .card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% 0%, var(--glow), transparent 70%);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .card:hover { transform: translateY(-4px); border-color: rgba(66,133,244,0.35); box-shadow: 0 12px 40px rgba(66,133,244,0.15); }
-    .card:hover::before { opacity: 1; }
-
-    .card-icon { font-size: 2rem; margin-bottom: 14px; }
-    .card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }
-    .card p  { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
-
-    /* ── Demo prompts ── */
-    .prompts-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-    @media (max-width: 600px) { .prompts-grid { grid-template-columns: 1fr; } }
-
-    .prompt-box {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px;
-    }
-    .prompt-box h3 { font-size: 0.95rem; font-weight: 600; color: var(--cyan); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-    .prompt-box ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .prompt-box li {
-      font-size: 0.85rem;
-      color: var(--muted);
-      background: rgba(255,255,255,0.04);
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-family: 'Inter', monospace;
-      border-left: 2px solid var(--blue);
-    }
-
-    /* ── Tech stack pills ── */
-    .pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-    .pill {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
-      border-radius: 50px;
-      padding: 6px 16px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .pill:hover { border-color: var(--cyan); background: rgba(56,189,248,0.08); }
+    .copy-btn:hover { background:rgba(66,133,244,0.28); }
 
     /* ── How it works ── */
-    .flow {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 32px;
-    }
-    .flow-steps { display: flex; flex-direction: column; gap: 0; }
-    .flow-step {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .flow-step:last-child { border-bottom: none; }
-    .step-num {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--blue), var(--cyan));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700; flex-shrink: 0;
-    }
-    .step-text h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
-    .step-text p  { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
-
-    /* ── Skill URL box ── */
-    .url-box {
-      background: var(--card);
-      border: 1px solid rgba(66,133,244,0.3);
-      border-radius: 14px;
-      padding: 20px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .url-box code {
-      font-size: 0.82rem;
-      color: var(--cyan);
-      word-break: break-all;
-      flex: 1;
-    }
-    .copy-btn {
-      background: rgba(66,133,244,0.15);
-      border: 1px solid rgba(66,133,244,0.3);
-      color: var(--cyan);
-      border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s;
-      white-space: nowrap;
-    }
-    .copy-btn:hover { background: rgba(66,133,244,0.28); }
+    .arch { background:var(--card); border:1px solid var(--border); border-radius:18px; padding:28px; }
+    .arch-steps { display:flex; flex-direction:column; gap:0; }
+    .arch-step { display:flex; align-items:flex-start; gap:14px; padding:14px 0; border-bottom:1px solid var(--border); }
+    .arch-step:last-child { border-bottom:none; }
+    .step-n { width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,var(--blue),var(--cyan)); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
+    .step-t h4 { font-size:.9rem; font-weight:600; margin-bottom:3px; }
+    .step-t p { font-size:.82rem; color:var(--muted); line-height:1.5; }
 
     /* ── Footer ── */
-    footer {
-      text-align: center;
-      padding: 50px 0 40px;
-      color: var(--muted);
-      font-size: 14px;
-      border-top: 1px solid var(--border);
-    }
-    footer a { color: var(--cyan); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
-    .footer-links { display: flex; gap: 24px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+    footer { text-align:center; padding:44px 0 36px; color:var(--muted); font-size:13px; border-top:1px solid var(--border); }
+    footer a { color:var(--cyan); text-decoration:none; }
+    footer a:hover { text-decoration:underline; }
+    .footer-links { display:flex; gap:20px; justify-content:center; margin-top:12px; flex-wrap:wrap; }
 
     /* ── Animations ── */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ── Divider ── */
-    .divider { height: 1px; background: var(--border); margin: 0; }
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity:0; transform:translateY(22px); transition:opacity .6s ease,transform .6s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
   </style>
 </head>
 <body>
+<div class="wrap">
 
   <!-- Hero -->
-  <div class="container">
-    <section class="hero">
-      <div class="badge">🤖 Google AI Edge Gallery — Community Build</div>
-      <h1>Gemma Pocket<br/>Assistant</h1>
-      <p>An on-device AI utility assistant powered by <strong>Gemma + LiteRT-LM</strong>. Wikipedia intelligence & QR generation — fully offline, privacy-first, running on your Android device.</p>
-      <div class="hero-btns">
-        <a id="github-btn" class="btn-primary" href="https://github.com/saikirantechy/Gemma-4-blr" target="_blank">
-          ⭐ View on GitHub
-        </a>
-        <a id="install-btn" class="btn-secondary" href="#install">
-          📱 Install Skill
-        </a>
-      </div>
-    </section>
+  <section class="hero">
+    <div class="badge">🤖 Google AI Edge Gallery — Open Source Skill Collection</div>
+    <h1>Gemma AI Edge<br/>Skill Collection</h1>
+    <p>7 lightweight, on-device AI skills powered by <strong>Gemma + LiteRT-LM</strong>. No cloud. No API keys. Everything runs privately on your Android device.</p>
+    <div class="hero-btns">
+      <a id="gh-btn" class="btn-p" href="https://github.com/saikirantechy/Gemma-4-blr" target="_blank">⭐ GitHub</a>
+      <a class="btn-s" href="#skills">🗂 Browse Skills</a>
+      <a class="btn-s" href="#install">📲 Install</a>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats reveal">
+    <div class="stat"><div class="stat-num">7</div><div class="stat-label">Skills</div></div>
+    <div class="stat"><div class="stat-num">2</div><div class="stat-label">JS Skills</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Text Skills</div></div>
+    <div class="stat"><div class="stat-num">20+</div><div class="stat-label">Languages</div></div>
   </div>
 
-  <div class="divider"></div>
+</div>
 
-  <!-- Features -->
-  <div class="container">
-    <section class="section reveal">
-      <div class="section-title">✨ What it does</div>
-      <div class="cards">
-        <div class="card">
-          <div class="card-icon">🔎</div>
-          <h3>Wikipedia Search</h3>
-          <p>Ask about any person, place, or event. Gemma queries Wikipedia and summarizes the result locally — no cloud inference needed.</p>
+<div class="divider"></div>
+
+<!-- Skill Collection -->
+<div class="wrap" id="skills">
+  <section class="sec reveal">
+    <div class="sec-title">🗂 Skill Collection</div>
+    <div class="skills-grid">
+
+      <a class="skill-card" href="skills/built-in/gemma-pocket-assistant/SKILL.md" target="_blank">
+        <div class="skill-header">
+          <span class="skill-icon">🔎📱</span>
+          <span class="skill-type-badge type-js">JS</span>
         </div>
-        <div class="card">
-          <div class="card-icon">📱</div>
-          <h3>QR Code Generation</h3>
-          <p>Turn any URL or text into a scannable QR code instantly. Auto-prefixes https:// and renders the image right in your chat.</p>
+        <div class="skill-name">Gemma Pocket Assistant</div>
+        <div class="skill-desc">Wikipedia summarization + QR code generation in one unified skill. The flagship skill of this collection.</div>
+        <div class="skill-tags"><span class="tag">Wikipedia API</span><span class="tag">QR Code</span><span class="tag">Image Output</span></div>
+        <div class="skill-footer">
+          <span class="install-link" onclick="copySkillUrl('gemma-pocket-assistant',event)">📋 Copy Install URL</span>
         </div>
-        <div class="card">
-          <div class="card-icon">⚡</div>
-          <h3>Offline-First AI</h3>
-          <p>Inference runs entirely on-device via LiteRT-LM. No latency from cloud round-trips. Works on any Android with AI Edge Gallery.</p>
+      </a>
+
+      <a class="skill-card" href="skills/built-in/gemma-study-buddy/SKILL.md" target="_blank">
+        <div class="skill-header">
+          <span class="skill-icon">📚</span>
+          <span class="skill-type-badge type-text">Text</span>
         </div>
-        <div class="card">
-          <div class="card-icon">🔒</div>
-          <h3>Privacy-Focused</h3>
-          <p>Your prompts never leave your device. The Gemma model handles all reasoning locally — only tool calls fetch external data.</p>
+        <div class="skill-name">Gemma Study Buddy</div>
+        <div class="skill-desc">Explains concepts simply, generates practice quizzes, summarizes notes, and creates study plans. Your offline AI tutor.</div>
+        <div class="skill-tags"><span class="tag">Quiz Generator</span><span class="tag">Note Summary</span><span class="tag">Study Plans</span></div>
+        <div class="skill-footer">
+          <span class="install-link" onclick="copySkillUrl('gemma-study-buddy',event)">📋 Copy Install URL</span>
+        </div>
+      </a>
+
+      <a class="skill-card" href="skills/built-in/gemma-code-helper/SKILL.md" target="_blank">
+        <div class="skill-header">
+          <span class="skill-icon">💻</span>
+          <span class="skill-type-badge type-text">Text</span>
+        </div>
+        <div class="skill-name">Gemma Code Helper</div>
+        <div class="skill-desc">Explains code, debugs errors with root-cause analysis, generates working examples. Your offline coding assistant for any language.</div>
+        <div class="skill-tags"><span class="tag">Debug</span><span class="tag">Code Review</span><span class="tag">20+ Languages</span></div>
+        <div class="skill-footer">
+          <span class="install-link" onclick="copySkillUrl('gemma-code-helper',event)">📋 Copy Install URL</span>
+        </div>
+      </a>
+
+      <a class="skill-card" href="skills/built-in/gemma-translator/SKILL.md" target="_blank">
+        <div class="skill-header">
+          <span class="skill-icon">🌐</span>
+          <span class="skill-type-badge type-text">Text</span>
+        </div>
+        <div class="skill-name">Gemma Translator</div>
+        <div class="skill-desc">Offline multilingual translation with strong Indic language support. Handles Hindi, Kannada, Telugu, Tamil + 20 more languages.</div>
+        <div class="skill-tags"><span class="tag">Hindi</span><span class="tag">Kannada</span><span class="tag">Hinglish</span><span class="tag">20+ Languages</span></div>
+        <div class="skill-footer">
+          <span class="install-link" onclick="copySkillUrl('gemma-translator',event)">📋 Copy Install URL</span>
+        </div>
+      </a>
+
+      <a class="skill-card" href="skills/built-in/gemma-resume-reviewer/SKILL.md" target="_blank">
+        <div class="skill-header">
+          <span class="skill-icon">📄</span>
+          <span class="skill-type-badge type-text">Text</span>
+        </div>
+        <div class="skill-name">Gemma Resume Reviewer</div>
+        <div class="skill-desc">ATS compatibility analysis, skill extraction, bullet point rewriter, and career summary generator. 100% private — no data leaves device.</div>
+        <div class="skill-tags"><span class="tag">ATS Optimizer</span><span class="tag">Skill Extractor</span><span class="tag">Career Summary</span></div>
+        <div class="skill-footer">
+          <span class="install-link" onclick="copySkillUrl('gemma-resume-reviewer',event)">📋 Copy Install URL</span>
+        </div>
+      </a>
+
+      <a class="skill-card" href="skills/built-in/gemma-meeting-notes/SKILL.md" target="_blank">
+        <div class="skill-header">
+          <span class="skill-icon">📝</span>
+          <span class="skill-type-badge type-text">Text</span>
+        </div>
+        <div class="skill-name">Gemma Meeting Notes</div>
+        <div class="skill-desc">Transforms messy transcripts into structured summaries, action item tables, and follow-up email drafts. Meetings stay private.</div>
+        <div class="skill-tags"><span class="tag">Action Items</span><span class="tag">Email Draft</span><span class="tag">Decisions</span></div>
+        <div class="skill-footer">
+          <span class="install-link" onclick="copySkillUrl('gemma-meeting-notes',event)">📋 Copy Install URL</span>
+        </div>
+      </a>
+
+      <a class="skill-card" href="skills/built-in/gemma-link-summarizer/SKILL.md" target="_blank">
+        <div class="skill-header">
+          <span class="skill-icon">🔗</span>
+          <span class="skill-type-badge type-js">JS</span>
+        </div>
+        <div class="skill-name">Gemma Link Summarizer</div>
+        <div class="skill-desc">Paste any public article URL and get a TL;DR, key points, and main takeaway — fetched and summarized instantly.</div>
+        <div class="skill-tags"><span class="tag">Web Fetch</span><span class="tag">TL;DR</span><span class="tag">Key Points</span></div>
+        <div class="skill-footer">
+          <span class="install-link" onclick="copySkillUrl('gemma-link-summarizer',event)">📋 Copy Install URL</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- Install -->
+<div class="wrap" id="install">
+  <section class="sec reveal">
+    <div class="sec-title">📲 How to Install</div>
+
+    <div class="install-box">
+      <h3>🌐 Method 1 — Load from URL (Recommended)</h3>
+      <p style="color:var(--muted);font-size:.87rem;margin-bottom:14px;">AI Edge Gallery → Agent Skills → Skills chip → (+) → Load skill from URL</p>
+      <div class="url-row">
+        <code id="base-url">https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/&lt;skill-name&gt;</code>
+        <button class="copy-btn" onclick="copyBase()">Copy Pattern</button>
+      </div>
+      <p style="color:var(--muted);font-size:.8rem;margin-top:10px;">Click "📋 Copy Install URL" on any skill card above for the exact URL.</p>
+    </div>
+
+    <div class="install-box">
+      <h3>🔌 Method 2 — ADB Push (Offline)</h3>
+      <pre>adb push skills/built-in/&lt;skill-name&gt; /sdcard/Download/&lt;skill-name&gt;</pre>
+      <p style="color:var(--muted);font-size:.8rem;margin-top:10px;">Then in app: Skills → (+) → Import local skill</p>
+    </div>
+
+    <div class="install-box">
+      <h3>🖥 Method 3 — Local Server (Development)</h3>
+      <pre>python -m http.server 8080
+# Then load: http://YOUR_LAN_IP:8080/skills/built-in/&lt;skill-name&gt;</pre>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- How it works -->
+<div class="wrap">
+  <section class="sec reveal">
+    <div class="sec-title">⚙️ How It Works</div>
+    <div class="arch">
+      <div class="arch-steps">
+        <div class="arch-step">
+          <div class="step-n">1</div>
+          <div class="step-t"><h4>User sends a prompt</h4><p>Natural language — "Summarize this article: [URL]", "Translate to Hindi", "Review my resume"</p></div>
+        </div>
+        <div class="arch-step">
+          <div class="step-n">2</div>
+          <div class="step-t"><h4>Gemma reads SKILL.md and routes</h4><p>The on-device model matches the prompt to the skill description and follows the instructions in SKILL.md</p></div>
+        </div>
+        <div class="arch-step">
+          <div class="step-n">3</div>
+          <div class="step-t"><h4>Text skills → Gemma responds directly</h4><p>No external calls. Pure on-device inference for translation, code help, resume review, etc.</p></div>
+        </div>
+        <div class="arch-step">
+          <div class="step-n">4</div>
+          <div class="step-t"><h4>JS skills → run_js → hidden WebView</h4><p>LiteRT-LM calls run_js, the app loads scripts/index.html in a WebView, executes the logic (fetch, render, compute), returns JSON to Gemma</p></div>
+        </div>
+        <div class="arch-step">
+          <div class="step-n">5</div>
+          <div class="step-t"><h4>Gemma delivers the final response</h4><p>Text summary, rendered QR image, structured table — displayed directly in the AI Edge Gallery chat UI</p></div>
         </div>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
+</div>
 
-  <div class="divider"></div>
+<div class="divider"></div>
 
-  <!-- Demo Prompts -->
-  <div class="container">
-    <section class="section reveal">
-      <div class="section-title">🎤 Try These Prompts</div>
-      <div class="prompts-grid">
-        <div class="prompt-box">
-          <h3>🔎 Wikipedia</h3>
-          <ul>
-            <li>Who is Sundar Pichai?</li>
-            <li>Tell me about Bengaluru</li>
-            <li>What is LiteRT-LM?</li>
-            <li>Explain quantum computing</li>
-          </ul>
-        </div>
-        <div class="prompt-box">
-          <h3>📱 QR Codes</h3>
-          <ul>
-            <li>Generate QR for sktnexus.com</li>
-            <li>Create a QR for my GitHub</li>
-            <li>Make QR for github.com/google-ai-edge/gallery</li>
-            <li>QR code for my LinkedIn profile</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </div>
+<!-- Footer -->
+<div class="wrap">
+  <footer>
+    <p>Built by <a href="https://github.com/saikirantechy" target="_blank">Sai Kiran BK</a> for the Google AI Edge Gallery Community</p>
+    <div class="footer-links">
+      <a href="https://github.com/saikirantechy/Gemma-4-blr" target="_blank">GitHub</a>
+      <a href="https://github.com/saikirantechy/Gemma-4-blr/blob/main/CONTRIBUTING.md" target="_blank">Contribute</a>
+      <a href="https://linkedin.com/in/saikiranbk" target="_blank">LinkedIn</a>
+      <a href="https://github.com/google-ai-edge/gallery" target="_blank">AI Edge Gallery</a>
+      <a href="https://ai.google.dev/gemma" target="_blank">Gemma</a>
+    </div>
+  </footer>
+</div>
 
-  <div class="divider"></div>
+<div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:#1e293b;border:1px solid rgba(56,189,248,0.3);color:#38bdf8;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;transition:transform .3s;z-index:999;">✅ URL copied!</div>
 
-  <!-- How it works -->
-  <div class="container">
-    <section class="section reveal">
-      <div class="section-title">⚙️ How It Works</div>
-      <div class="flow">
-        <div class="flow-steps">
-          <div class="flow-step">
-            <div class="step-num">1</div>
-            <div class="step-text">
-              <h4>User sends a prompt</h4>
-              <p>You type naturally — "Who is Sundar Pichai?" or "Generate QR for sktnexus.com"</p>
-            </div>
-          </div>
-          <div class="flow-step">
-            <div class="step-num">2</div>
-            <div class="step-text">
-              <h4>Gemma reads SKILL.md and routes</h4>
-              <p>The on-device model detects the intent and calls the correct tool: <code>wikipedia.html</code> or <code>qrcode.html</code></p>
-            </div>
-          </div>
-          <div class="flow-step">
-            <div class="step-num">3</div>
-            <div class="step-text">
-              <h4>JS skill executes in hidden WebView</h4>
-              <p>Wikipedia: fuzzy search + infobox parse via REST API. QR: qrcodejs CDN renders to canvas → base64 PNG.</p>
-            </div>
-          </div>
-          <div class="flow-step">
-            <div class="step-num">4</div>
-            <div class="step-text">
-              <h4>Gemma summarizes and responds</h4>
-              <p>The result is passed back to the model, which delivers a clean 2-3 sentence answer — or renders the QR image directly in chat.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+<script>
+  const BASE = 'https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/';
 
-  <div class="divider"></div>
+  // Scroll reveal
+  const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-  <!-- Install -->
-  <div class="container" id="install">
-    <section class="section reveal">
-      <div class="section-title">📲 Install the Skill</div>
-      <p style="text-align:center;color:var(--muted);margin-bottom:28px;font-size:0.95rem;">Open AI Edge Gallery → Agent Skills → Skills chip → (+) → Load from URL</p>
-      <div class="url-box">
-        <code id="skill-url">https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-pocket-assistant</code>
-        <button class="copy-btn" id="copy-btn" onclick="copyUrl()">Copy URL</button>
-      </div>
-    </section>
-  </div>
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.transform = 'translateX(-50%) translateY(0)';
+    setTimeout(() => t.style.transform = 'translateX(-50%) translateY(60px)', 2200);
+  }
 
-  <div class="divider"></div>
+  function copySkillUrl(skillName, e) {
+    e.preventDefault(); e.stopPropagation();
+    navigator.clipboard.writeText(BASE + skillName).then(() => showToast('✅ Install URL copied for ' + skillName));
+  }
 
-  <!-- Tech Stack -->
-  <div class="container">
-    <section class="section reveal">
-      <div class="section-title">🛠 Tech Stack</div>
-      <div class="pills">
-        <span class="pill">🤖 Gemma</span>
-        <span class="pill">⚡ LiteRT-LM</span>
-        <span class="pill">📱 AI Edge Gallery</span>
-        <span class="pill">🌐 Wikipedia API</span>
-        <span class="pill">🔲 qrcodejs</span>
-        <span class="pill">🤖 Android WebView</span>
-        <span class="pill">🟨 JavaScript</span>
-        <span class="pill">🔒 On-Device Inference</span>
-      </div>
-    </section>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- Footer -->
-  <div class="container">
-    <footer>
-      <p>Built with ❤️ by <a href="https://github.com/saikirantechy" target="_blank">Sai Kiran BK</a> for the Google AI Edge Gallery Hackathon</p>
-      <div class="footer-links">
-        <a href="https://github.com/saikirantechy/gemma-pocket-assistant" target="_blank">GitHub</a>
-        <a href="https://linkedin.com/in/saikiranbk" target="_blank">LinkedIn</a>
-        <a href="https://github.com/google-ai-edge/gallery" target="_blank">AI Edge Gallery</a>
-        <a href="https://ai.google.dev/gemma" target="_blank">Gemma</a>
-      </div>
-    </footer>
-  </div>
-
-  <script>
-    // Scroll reveal
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-    }, { threshold: 0.12 });
-    reveals.forEach(el => observer.observe(el));
-
-    // Copy URL button
-    function copyUrl() {
-      const url = document.getElementById('skill-url').textContent;
-      navigator.clipboard.writeText(url).then(() => {
-        const btn = document.getElementById('copy-btn');
-        btn.textContent = '✅ Copied!';
-        setTimeout(() => btn.textContent = 'Copy URL', 2000);
-      });
-    }
-  </script>
+  function copyBase() {
+    navigator.clipboard.writeText(BASE + '<skill-name>').then(() => showToast('✅ URL pattern copied!'));
+  }
+</script>
 </body>
 </html>
