@@ -11,13 +11,11 @@ AI Edge Gallery is the premier destination for running the world's most powerful
 
 The latest version brings official support for the newly released Gemma 4 family. As the centerpiece of this release, Gemma 4 allows you to test the cutting edge of on-device AI. Experience advanced reasoning, logic, and creative capabilities without ever sending your data to a server.
 
-
-| **Install the app today from Google Play** | **Install the app today from App Store** |
-| :--- | :--- |
+| **Install the app today from Google Play**                                                                                                                                                                                           | **Install the app today from App Store**                                                                                                                                                                                                                                                                                                                                                                                 |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | <a href='https://play.google.com/store/apps/details?id=com.google.ai.edge.gallery'><img alt='Get it on Google Play' height="120" src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a> | <a href="https://apps.apple.com/us/app/google-ai-edge-gallery/id6749645337?itscg=30200&itsct=apps_box_badge&mttnsubad=6749645337" style="display: inline-block;"> <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1771977600" alt="Download on the App Store" style="width: 246px; height: 90px; vertical-align: middle; object-fit: contain;" /></a> |
 
 For users without Google Play access, install the apk from the [**latest release**](https://github.com/google-ai-edge/gallery/releases/latest/)
-
 
 ## App Preview
 
@@ -32,37 +30,127 @@ For users without Google Play access, install the apk from the [**latest release
 
 ## ✨ Core Features
 
-* **Agent Skills**: Transform your LLM from a conversationalist into a proactive assistant. Use the Agent Skills tile to augment model capabilities with tools like Wikipedia for fact-grounding, interactive maps, and rich visual summary cards. You can even load modular skills from a URL or browse community contributions on GitHub Discussions.
+- **Agent Skills**: Transform your LLM from a conversationalist into a proactive assistant. Use the Agent Skills tile to augment model capabilities with tools like Wikipedia for fact-grounding, interactive maps, and rich visual summary cards. You can even load modular skills from a URL or browse community contributions on GitHub Discussions.
 
-* **AI Chat with Thinking Mode**: Engage in fluid, multi-turn conversations and toggle the new Thinking Mode to peek "under the hood." This feature allows you to see the model’s step-by-step reasoning process, which is perfect for understanding complex problem-solving. Note: Thinking Mode currently works with supported models, starting with the Gemma 4 family.
+- **AI Chat with Thinking Mode**: Engage in fluid, multi-turn conversations and toggle the new Thinking Mode to peek "under the hood." This feature allows you to see the model’s step-by-step reasoning process, which is perfect for understanding complex problem-solving. Note: Thinking Mode currently works with supported models, starting with the Gemma 4 family.
 
-* **Ask Image**: Use multimodal power to identify objects, solve visual puzzles, or get detailed descriptions using your device’s camera or photo gallery.
+- **Ask Image**: Use multimodal power to identify objects, solve visual puzzles, or get detailed descriptions using your device’s camera or photo gallery.
 
-* **Audio Scribe**: Transcribe and translate voice recordings into text in real-time using high-efficiency on-device language models.
+- **Audio Scribe**: Transcribe and translate voice recordings into text in real-time using high-efficiency on-device language models.
 
-* **Prompt Lab**: A dedicated workspace to test different prompts and single-turn use cases with granular control over model parameters like temperature and top-k.
+- **Prompt Lab**: A dedicated workspace to test different prompts and single-turn use cases with granular control over model parameters like temperature and top-k.
 
-* **Mobile Actions**: Unlock offline device controls and automated tasks powered entirely by a finetune of FunctionGemma 270m.
+- **Mobile Actions**: Unlock offline device controls and automated tasks powered entirely by a finetune of FunctionGemma 270m.
 
-* **Tiny Garden**: A fun, experimental mini-game that uses natural language to plant and harvest a virtual garden using a finetune of FunctionGemma 270m.
+- **Tiny Garden**: A fun, experimental mini-game that uses natural language to plant and harvest a virtual garden using a finetune of FunctionGemma 270m.
 
-* **Model Management & Benchmark**: Gallery is a flexible sandbox for a wide variety of open-source models. Easily download models from the list or load your own custom models. Manage your model library effortlessly and run benchmark tests to understand exactly how each model performs on your specific hardware.
+- **Model Management & Benchmark**: Gallery is a flexible sandbox for a wide variety of open-source models. Easily download models from the list or load your own custom models. Manage your model library effortlessly and run benchmark tests to understand exactly how each model performs on your specific hardware.
 
-* **100% On-Device Privacy**: All model inferences happen directly on your device hardware. No internet is required, ensuring total privacy for your prompts, images, and sensitive data.
+- **100% On-Device Privacy**: All model inferences happen directly on your device hardware. No internet is required, ensuring total privacy for your prompts, images, and sensitive data.
 
-## 🏁 Get Started in Minutes!
+## � Agent Skills Collection
+
+The AI Edge Gallery features a rich ecosystem of modular skills that extend Gemma's capabilities. Each skill is designed for on-device execution with mobile-first UX.
+
+### Text Skills
+
+| Skill                   | Description                                           | Status       |
+| ----------------------- | ----------------------------------------------------- | ------------ |
+| Gemma Pocket Assistant  | AI-powered personal assistant for on-device tasks     | ✅ Available |
+| Gemma Study Buddy       | AI study companion for learning and research          | ✅ Available |
+| Gemma Code Helper       | AI coding assistant for development tasks             | ✅ Available |
+| Gemma Translator        | Multilingual translation powered by AI                | ✅ Available |
+| Gemma Meeting Notes     | AI-powered meeting note taker and summarizer          | ✅ Available |
+| Gemma Link Summarizer   | Summarize web content and articles                    | ✅ Available |
+| Gemma Kitchen Adventure | Text-based adventure game in a sentient kitchen world | ✅ Available |
+
+### JS Skills
+
+| Skill                | Description                                 | Status       |
+| -------------------- | ------------------------------------------- | ------------ |
+| Gemma Calculate Hash | Calculate SHA256, MD5, SHA1 hashes for text | ✅ Available |
+
+### API Skills
+
+| Skill                      | Description                                         | Status            |
+| -------------------------- | --------------------------------------------------- | ----------------- |
+| Gemma Query Wikipedia Plus | Advanced Wikipedia search with multilingual support | ✅ Available      |
+| Gemma Mood Music           | Suggest music based on mood and analysis            | 🚧 In Development |
+| Gemma Restaurant Roulette  | Restaurant recommendation with animated roulette    | 🚧 In Development |
+
+### Webview Skills
+
+| Skill                 | Description                                   | Status       |
+| --------------------- | --------------------------------------------- | ------------ |
+| Gemma Interactive Map | Interactive map viewer with pins and routes   | ✅ Available |
+| Gemma Mood Tracker    | Track moods with calendar and analytics       | ✅ Available |
+| Gemma Virtual Piano   | Interactive playable piano with touch support | ✅ Available |
+
+### Image Skills
+
+| Skill           | Description                                                | Status            |
+| --------------- | ---------------------------------------------------------- | ----------------- |
+| Gemma QR Studio | Generate QR codes for URLs, text, contacts, WiFi, payments | 🚧 In Development |
+
+### Camera Skills
+
+| Skill              | Description                               | Status            |
+| ------------------ | ----------------------------------------- | ----------------- |
+| Gemma Text Spinner | Overlay spinning text with camera effects | 🚧 In Development |
+
+### Native Skills
+
+| Skill            | Description                                | Status            |
+| ---------------- | ------------------------------------------ | ----------------- |
+| Gemma Send Email | Compose and send emails with AI assistance | 🚧 In Development |
+
+### Skill Screenshots
+
+_Coming soon - screenshots for each skill will be added here_
+
+## 🚀 Future Scalability Recommendations
+
+### Architecture Improvements
+
+- **Modular Components**: Extract common UI components (buttons, inputs, cards) into reusable web components
+- **Build System**: Implement a build pipeline with minification, bundling, and asset optimization
+- **Testing Framework**: Add unit tests for JS utilities and integration tests for skills
+- **Performance Monitoring**: Implement performance budgets and monitoring for on-device execution
+
+### Skill Development Guidelines
+
+- **Consistent API**: Standardize skill interfaces for easier integration with Gemma
+- **Progressive Enhancement**: Ensure skills work without JavaScript for basic functionality
+- **Accessibility**: Implement WCAG guidelines for broader device compatibility
+- **Offline-First**: Design skills to work without network dependencies where possible
+
+### Community Contributions
+
+- **Skill Templates**: Provide starter templates for common skill types (text, JS, API)
+- **Documentation**: Expand developer docs with examples and best practices
+- **Code Review**: Establish contribution guidelines and automated checks
+- **Showcase**: Create a community gallery for user-submitted skills
+
+### Platform Expansion
+
+- **Cross-Platform**: Extend support beyond Android to iOS and web platforms
+- **Multi-Modal**: Integrate additional input methods (voice, camera, sensors)
+- **Model Agnostic**: Design skills to work with multiple AI models beyond Gemma
+- **Edge Computing**: Optimize for various edge devices and performance constraints
+
+## �🏁 Get Started in Minutes!
 
 1. **Check OS Requirement**: Android 12 and up, and iOS 17 and up.
-2.  **Download the App:**
-    - Install the app from [Google Play](https://play.google.com/store/apps/details?id=com.google.ai.edge.gallery) or [App Store](https://apps.apple.com/us/app/google-ai-edge-gallery/id6749645337).
-    - For users without Google Play access: install the apk from the [**latest release**](https://github.com/google-ai-edge/gallery/releases/latest/)
-3.  **Install & Explore:** For detailed installation instructions (including for corporate devices) and a full user guide, head over to our [**Project Wiki**](https://github.com/google-ai-edge/gallery/wiki)!
+2. **Download the App:**
+   - Install the app from [Google Play](https://play.google.com/store/apps/details?id=com.google.ai.edge.gallery) or [App Store](https://apps.apple.com/us/app/google-ai-edge-gallery/id6749645337).
+   - For users without Google Play access: install the apk from the [**latest release**](https://github.com/google-ai-edge/gallery/releases/latest/)
+3. **Install & Explore:** For detailed installation instructions (including for corporate devices) and a full user guide, head over to our [**Project Wiki**](https://github.com/google-ai-edge/gallery/wiki)!
 
 ## 🛠️ Technology Highlights
 
-*   **Google AI Edge:** Core APIs and tools for on-device ML.
-*   **LiteRT:** Lightweight runtime for optimized model execution.
-*   **Hugging Face Integration:** For model discovery and download.
+- **Google AI Edge:** Core APIs and tools for on-device ML.
+- **LiteRT:** Lightweight runtime for optimized model execution.
+- **Hugging Face Integration:** For model discovery and download.
 
 ## ⌨️ Development
 
@@ -72,8 +160,8 @@ Check out the [development notes](DEVELOPMENT.md) for instructions about how to 
 
 This is an **experimental Beta release**, and your input is crucial!
 
-*   🐞 **Found a bug?** [Report it here!](https://github.com/google-ai-edge/gallery/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D)
-*   💡 **Have an idea?** [Suggest a feature!](https://github.com/google-ai-edge/gallery/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=%5BFEATURE%5D)
+- 🐞 **Found a bug?** [Report it here!](https://github.com/google-ai-edge/gallery/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D)
+- 💡 **Have an idea?** [Suggest a feature!](https://github.com/google-ai-edge/gallery/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=%5BFEATURE%5D)
 
 ## 📄 License
 
@@ -81,7 +169,7 @@ Licensed under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file 
 
 ## 🔗 Useful Links
 
-*   [**Project Wiki (Detailed Guides)**](https://github.com/google-ai-edge/gallery/wiki)
-*   [Hugging Face LiteRT Community](https://huggingface.co/litert-community)
-*   [LiteRT-LM](https://github.com/google-ai-edge/LiteRT-LM)
-*   [Google AI Edge Documentation](https://ai.google.dev/edge)
+- [**Project Wiki (Detailed Guides)**](https://github.com/google-ai-edge/gallery/wiki)
+- [Hugging Face LiteRT Community](https://huggingface.co/litert-community)
+- [LiteRT-LM](https://github.com/google-ai-edge/LiteRT-LM)
+- [Google AI Edge Documentation](https://ai.google.dev/edge)

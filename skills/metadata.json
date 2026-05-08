@@ -1,0 +1,200 @@
+{
+  "skills": [
+    {
+      "id": "gemma-pocket-assistant",
+      "name": "Gemma Pocket Assistant",
+      "description": "AI-powered personal assistant for on-device tasks",
+      "type": "Text",
+      "category": "Assistant",
+      "icon": "🤖",
+      "path": "gemma-pocket-assistant",
+      "tags": ["assistant", "productivity", "AI"]
+    },
+    {
+      "id": "gemma-study-buddy",
+      "name": "Gemma Study Buddy",
+      "description": "AI study companion for learning and research",
+      "type": "Text",
+      "category": "Education",
+      "icon": "📚",
+      "path": "gemma-study-buddy",
+      "tags": ["study", "education", "research"]
+    },
+    {
+      "id": "gemma-code-helper",
+      "name": "Gemma Code Helper",
+      "description": "AI coding assistant for development tasks",
+      "type": "Text",
+      "category": "Development",
+      "icon": "💻",
+      "path": "gemma-code-helper",
+      "tags": ["coding", "development", "programming"]
+    },
+    {
+      "id": "gemma-translator",
+      "name": "Gemma Translator",
+      "description": "Multilingual translation powered by AI",
+      "type": "Text",
+      "category": "Language",
+      "icon": "🌐",
+      "path": "gemma-translator",
+      "tags": ["translation", "language", "multilingual"]
+    },
+    {
+      "id": "gemma-meeting-notes",
+      "name": "Gemma Meeting Notes",
+      "description": "AI-powered meeting note taker and summarizer",
+      "type": "Text",
+      "category": "Productivity",
+      "icon": "📝",
+      "path": "gemma-meeting-notes",
+      "tags": ["meetings", "notes", "summary"]
+    },
+    {
+      "id": "gemma-link-summarizer",
+      "name": "Gemma Link Summarizer",
+      "description": "Summarize web content and articles",
+      "type": "Text",
+      "category": "Content",
+      "icon": "🔗",
+      "path": "gemma-link-summarizer",
+      "tags": ["summary", "web", "content"]
+    },
+    {
+      "id": "gemma-kitchen-adventure",
+      "name": "Gemma Kitchen Adventure",
+      "description": "Text-based adventure game in a sentient kitchen world",
+      "type": "Text",
+      "category": "Games",
+      "icon": "🍳",
+      "path": "kitchen-adventure",
+      "tags": ["adventure", "game", "text-based"]
+    },
+    {
+      "id": "gemma-calculate-hash",
+      "name": "Gemma Calculate Hash",
+      "description": "Calculate SHA256, MD5, SHA1 hashes for text",
+      "type": "JS",
+      "category": "Utilities",
+      "icon": "🔐",
+      "path": "calculate-hash",
+      "tags": ["hash", "security", "crypto"]
+    },
+    {
+      "id": "gemma-query-wikipedia-plus",
+      "name": "Gemma Query Wikipedia Plus",
+      "description": "Advanced Wikipedia search with summaries and infoboxes",
+      "type": "API",
+      "category": "Search",
+      "icon": "📖",
+      "path": "query-wikipedia-plus",
+      "tags": ["wikipedia", "search", "knowledge"]
+    },
+    {
+      "id": "gemma-qr-studio",
+      "name": "Gemma QR Studio",
+      "description": "Generate QR codes for URLs, text, contacts, WiFi, payments",
+      "type": "Image",
+      "category": "Utilities",
+      "icon": "📱",
+      "path": "qr-studio",
+      "tags": ["qr", "generator", "mobile"]
+    },
+    {
+      "id": "gemma-interactive-map",
+      "name": "Gemma Interactive Map",
+      "description": "Interactive map viewer with pins and routes",
+      "type": "Webview",
+      "category": "Maps",
+      "icon": "🗺️",
+      "path": "interactive-map",
+      "tags": ["map", "location", "navigation"]
+    },
+    {
+      "id": "gemma-mood-tracker",
+      "name": "Gemma Mood Tracker",
+      "description": "Track moods with calendar and analytics",
+      "type": "Webview",
+      "category": "Health",
+      "icon": "😊",
+      "path": "mood-tracker",
+      "tags": ["mood", "tracking", "analytics"]
+    },
+    {
+      "id": "gemma-virtual-piano",
+      "name": "Gemma Virtual Piano",
+      "description": "Interactive playable piano with touch support",
+      "type": "Webview",
+      "category": "Music",
+      "icon": "🎹",
+      "path": "virtual-piano",
+      "tags": ["piano", "music", "instrument"]
+    },
+    {
+      "id": "gemma-text-spinner",
+      "name": "Gemma Text Spinner",
+      "description": "Overlay spinning text with camera effects",
+      "type": "Camera",
+      "category": "Fun",
+      "icon": "🔄",
+      "path": "text-spinner",
+      "tags": ["text", "camera", "effects"]
+    },
+    {
+      "id": "gemma-mood-music",
+      "name": "Gemma Mood Music",
+      "description": "Suggest music based on mood and analysis",
+      "type": "API",
+      "category": "Music",
+      "icon": "🎵",
+      "path": "mood-music",
+      "tags": ["music", "mood", "recommendation"]
+    },
+    {
+      "id": "gemma-restaurant-roulette",
+      "name": "Gemma Restaurant Roulette",
+      "description": "Restaurant recommendation with animated roulette",
+      "type": "API",
+      "category": "Food",
+      "icon": "🍽️",
+      "path": "restaurant-roulette",
+      "tags": ["restaurant", "recommendation", "food"]
+    },
+    {
+      "id": "gemma-send-email",
+      "name": "Gemma Send Email",
+      "description": "Compose and send emails with AI assistance",
+      "type": "Native",
+      "category": "Communication",
+      "icon": "📧",
+      "path": "send-email",
+      "tags": ["email", "communication", "AI"]
+    }
+  ],
+  "categories": [
+    "Assistant",
+    "Education",
+    "Development",
+    "Language",
+    "Productivity",
+    "Content",
+    "Games",
+    "Utilities",
+    "Search",
+    "Maps",
+    "Health",
+    "Music",
+    "Fun",
+    "Food",
+    "Communication"
+  ],
+  "types": [
+    "Text",
+    "JS",
+    "API",
+    "Webview",
+    "Image",
+    "Camera",
+    "Native"
+  ]
+}

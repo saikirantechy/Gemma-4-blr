@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemma Kitchen Adventure</title>
+    <meta
+      name="description"
+      content="Text-based adventure game where kitchen appliances are sentient characters"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../shared/css/main.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header style="text-align: center; padding: 2rem 0">
+        <h1>🍳 Gemma Kitchen Adventure</h1>
+        <p class="text-muted">
+          A text-based adventure game where kitchen appliances are sentient
+          characters
+        </p>
+      </header>
+
+      <div class="card">
+        <h2>About This Skill</h2>
+        <p class="mb-3">
+          Embark on a whimsical journey through a world where every kitchen
+          appliance has come to life! As the Dungeon Master, Gemma guides you
+          through branching storylines filled with humorous interactions and
+          procedural adventures.
+        </p>
+        <div class="mb-3">
+          <strong>Features:</strong>
+          <ul style="margin-left: 1.5rem">
+            <li>Branching storylines with memory of choices</li>
+            <li>Humorous roleplay with sentient appliances</li>
+            <li>Procedural adventures in kitchen-themed locations</li>
+            <li>AI-powered narrative generation</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card mt-3">
+        <h2>Demo Interface</h2>
+        <p class="text-muted mb-3">
+          This is a demo interface. In the actual Gemma app, this skill would be
+          activated by saying "start kitchen adventure".
+        </p>
+
+        <div
+          id="adventure-output"
+          class="mb-3"
+          style="
+            min-height: 200px;
+            background: var(--surface);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            white-space: pre-wrap;
+          "
+        >
+          Welcome to the Kitchen Adventure Demo! To start your adventure, you
+          would say something like: "I enter the kitchen and look around." The
+          AI Dungeon Master (Gemma) would then respond with a vivid description
+          and present you with choices or situations. Example response format:
+          =============================== [Stainless Steel Plains - The
+          Countertop] The vast metallic expanse stretches before you, gleaming
+          under the fluorescent lights. In the distance, you see the noble
+          Refrigerator standing guard over the Tundra of the Sub-Zero. The
+          Situation: A fork lies nearby, its tines glinting dangerously. The
+          Toaster watches you from across the counter, its slots like dark eyes.
+          What do you do? ===============================
+        </div>
+
+        <div class="flex gap-2">
+          <input
+            type="text"
+            id="user-input"
+            class="input flex-1"
+            placeholder="Enter your action or command..."
+            style="flex: 1"
+          />
+          <button id="send-btn" class="btn btn-primary">Send</button>
+        </div>
+
+        <p class="text-muted mt-2" style="font-size: 0.8rem">
+          Note: This demo doesn't connect to Gemma AI. In the real
+          implementation, your input would be sent to Gemma with the kitchen
+          adventure system prompt.
+        </p>
+      </div>
+
+      <div class="card mt-3">
+        <h2>System Prompt</h2>
+        <details>
+          <summary style="cursor: pointer; font-weight: 500">
+            Click to view the Gemma system prompt for this skill
+          </summary>
+          <pre
+            id="system-prompt"
+            style="
+              background: var(--surface);
+              padding: 1rem;
+              border-radius: 8px;
+              margin-top: 1rem;
+              font-size: 0.85rem;
+              overflow-x: auto;
+              white-space: pre-wrap;
+            "
+          ></pre>
+        </details>
+      </div>
+    </div>
+
+    <script src="../../../shared/js/utils.js"></script>
+    <script>
+      // Load system prompt
+      fetch("../SKILL.md")
+        .then((response) => response.text())
+        .then((text) => {
+          const promptEl = $("#system-prompt");
+          if (promptEl) {
+            promptEl.textContent = text;
+          }
+        })
+        .catch((error) => console.error("Error loading system prompt:", error));
+
+      // Demo interaction
+      const outputEl = $("#adventure-output");
+      const inputEl = $("#user-input");
+      const sendBtn = $("#send-btn");
+
+      sendBtn.addEventListener("click", () => {
+        const userInput = inputEl.value.trim();
+        if (!userInput) return;
+
+        // Add user input to output
+        outputEl.textContent += `\n\n> ${userInput}\n\n`;
+        inputEl.value = "";
+
+        // Simulate AI response (demo only)
+        setTimeout(() => {
+          outputEl.textContent += `[Demo Response]\n\nThe AI would process your input "${userInput}" and generate an appropriate adventure response based on the kitchen theme.\n\nWhat do you do next?\n`;
+          outputEl.scrollTop = outputEl.scrollHeight;
+        }, 1000);
+      });
+
+      inputEl.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          sendBtn.click();
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,21 +1,34 @@
 ---
 name: calculate-hash
-description: Calculate the hash of a given text.
+description: Calculate SHA256, MD5, SHA1 hashes for user-provided text with copy functionality.
 ---
 
-# Calculate hash
+# Gemma Calculate Hash
 
-This skill calculates the hash of a given text.
+## Description
 
-## Examples
+Calculate cryptographic hashes for text input using various algorithms including SHA256, MD5, and SHA1. Features real-time hashing and one-click copy to clipboard.
 
-* "Calculate hash of..."
-* "What is the hash of..."
+## Features
 
-## Instructions
+- SHA256 hashing
+- MD5 hashing
+- SHA1 hashing
+- Real-time hash calculation
+- Copy hash to clipboard
+- Clean, mobile-first UI
 
-Call the `run_js` tool with the following exact parameters:
+## Usage
 
-- script name: `index.html`
-- data: A JSON string with the following field
+1. Enter text in the input field
+2. Select hash algorithm
+3. View the calculated hash
+4. Click copy button to copy to clipboard
+
+## Technical Details
+
+- Uses Web Crypto API for SHA256 and SHA1
+- MD5 implemented in JavaScript
+- Mobile-responsive design
+- No external dependencies
   - text: the text to calculate hash for
