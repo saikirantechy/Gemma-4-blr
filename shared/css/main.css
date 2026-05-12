@@ -118,6 +118,19 @@ p {
   transform: translateY(-2px);
 }
 
+.btn-small {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+.skill-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  align-items: center;
+}
+
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;

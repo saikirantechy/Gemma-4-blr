@@ -40,6 +40,8 @@ For users without Google Play access, install the apk from the [**latest release
 
 - **Prompt Lab**: A dedicated workspace to test different prompts and single-turn use cases with granular control over model parameters like temperature and top-k.
 
+- **Downloadable Skill Docs**: Each skill page can now be exported as a `.doc` file from the GitHub Pages site, with a combined ecosystem bundle available for all skills.
+
 - **Mobile Actions**: Unlock offline device controls and automated tasks powered entirely by a finetune of FunctionGemma 270m.
 
 - **Tiny Garden**: A fun, experimental mini-game that uses natural language to plant and harvest a virtual garden using a finetune of FunctionGemma 270m.
