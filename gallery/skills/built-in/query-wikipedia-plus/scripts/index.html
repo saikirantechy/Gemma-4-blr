@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemma Query Wikipedia Plus</title>
+    <meta
+      name="description"
+      content="Advanced Wikipedia search with multilingual support and infobox extraction"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../../shared/css/main.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header style="text-align: center; padding: 2rem 0">
+        <h1>📖 Gemma Query Wikipedia Plus</h1>
+        <p class="text-muted">
+          Advanced Wikipedia search with multilingual support
+        </p>
+      </header>
+
+      <div class="card">
+        <div class="mb-3">
+          <label
+            for="search-input"
+            style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+            >Search Query:</label
+          >
+          <input
+            type="text"
+            id="search-input"
+            class="input"
+            placeholder="Enter topic, person, or event..."
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            for="lang-select"
+            style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+            >Language:</label
+          >
+          <select id="lang-select" class="select">
+            <option value="en">English</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="it">Italian</option>
+            <option value="pt">Portuguese</option>
+            <option value="ru">Russian</option>
+            <option value="ja">Japanese</option>
+            <option value="ko">Korean</option>
+            <option value="zh">Chinese</option>
+            <option value="ar">Arabic</option>
+            <option value="hi">Hindi</option>
+          </select>
+        </div>
+
+        <button id="search-btn" class="btn btn-primary" style="width: 100%">
+          Search Wikipedia
+        </button>
+      </div>
+
+      <div id="results-section" class="hidden">
+        <div class="card mt-3">
+          <h2 id="article-title"></h2>
+          <div id="article-summary" class="mb-3"></div>
+
+          <div id="infobox-section" class="hidden">
+            <h3>Key Information</h3>
+            <div
+              id="infobox-content"
+              class="mb-3"
+              style="
+                background: var(--surface);
+                padding: 1rem;
+                border-radius: 8px;
+              "
+            ></div>
+          </div>
+
+          <div class="flex gap-2">
+            <a
+              id="full-article-link"
+              href="#"
+              target="_blank"
+              class="btn btn-secondary"
+              >Read Full Article</a
+            >
+            <button id="copy-summary-btn" class="btn btn-secondary">
+              Copy Summary
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="error-section" class="hidden">
+        <div class="card mt-3" style="border-color: var(--error)">
+          <h3 style="color: var(--error)">Search Error</h3>
+          <p id="error-message"></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../../../shared/js/utils.js"></script>
+    <script>
+      const searchInput = $("#search-input");
+      const langSelect = $("#lang-select");
+      const searchBtn = $("#search-btn");
+      const resultsSection = $("#results-section");
+      const errorSection = $("#error-section");
+      const articleTitle = $("#article-title");
+      const articleSummary = $("#article-summary");
+      const infoboxSection = $("#infobox-section");
+      const infoboxContent = $("#infobox-content");
+      const fullArticleLink = $("#full-article-link");
+      const copySummaryBtn = $("#copy-summary-btn");
+      const errorMessage = $("#error-message");
+
+      async function searchWikipedia(query, lang) {
+        const baseUrl = `https://${lang}.wikipedia.org/w/api.php`;
+
+        // Fuzzy search to get the best matching article
+        const searchParams = new URLSearchParams({
+          action: "query",
+          format: "json",
+          generator: "search",
+          gsrsearch: query,
+          gsrlimit: "1",
+          prop: "extracts|info",
+          explaintext: "1",
+          exintro: "1",
+          inprop: "url",
+          origin: "*",
+        });
+
+        const searchResponse = await fetch(`${baseUrl}?${searchParams}`);
+        if (!searchResponse.ok) {
+          throw new Error(`Wikipedia API error: ${searchResponse.status}`);
+        }
+
+        const searchData = await searchResponse.json();
+
+        if (!searchData.query || !searchData.query.pages) {
+          throw new Error(
+            `No articles found for "${query}" in ${lang.toUpperCase()}`,
+          );
+        }
+
+        const pages = searchData.query.pages;
+        const pageId = Object.keys(pages)[0];
+        const page = pages[pageId];
+
+        // Get infobox data
+        const infoboxParams = new URLSearchParams({
+          action: "parse",
+          format: "json",
+          pageid: pageId,
+          prop: "text",
+          section: "0",
+          origin: "*",
+        });
+
+        const infoboxResponse = await fetch(`${baseUrl}?${infoboxParams}`);
+        const infoboxData = await infoboxResponse.json();
+
+        let infoboxHtml = "";
+        if (infoboxData.parse && infoboxData.parse.text) {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(
+            infoboxData.parse.text["*"],
+            "text/html",
+          );
+          const infobox = doc.querySelector(".infobox, .vcard, table");
+          if (infobox) {
+            infoboxHtml = infobox.outerHTML;
+          }
+        }
+
+        return {
+          title: page.title,
+          summary: page.extract,
+          url: page.fullurl || page.canonicalurl,
+          infobox: infoboxHtml,
+        };
+      }
+
+      async function handleSearch() {
+        const query = searchInput.value.trim();
+        const lang = langSelect.value;
+
+        if (!query) {
+          GalleryUtils.toast.error("Please enter a search query");
+          return;
+        }
+
+        GalleryUtils.loading.show(searchBtn, "Searching...");
+        resultsSection.classList.add("hidden");
+        errorSection.classList.add("hidden");
+
+        try {
+          const result = await searchWikipedia(query, lang);
+
+          articleTitle.textContent = result.title;
+          articleSummary.textContent = result.summary;
+          fullArticleLink.href = result.url;
+
+          if (result.infobox) {
+            infoboxContent.innerHTML = result.infobox;
+            infoboxSection.classList.remove("hidden");
+          } else {
+            infoboxSection.classList.add("hidden");
+          }
+
+          resultsSection.classList.remove("hidden");
+          GalleryUtils.toast.success("Article found successfully");
+        } catch (error) {
+          console.error("Search error:", error);
+          errorMessage.textContent = error.message;
+          errorSection.classList.remove("hidden");
+          GalleryUtils.toast.error("Search failed");
+        } finally {
+          GalleryUtils.loading.hide(searchBtn, "Search Wikipedia");
+        }
+      }
+
+      function handleCopySummary() {
+        const summary = articleSummary.textContent;
+        if (summary) {
+          GalleryUtils.copyToClipboard(summary);
+        }
+      }
+
+      // Event listeners
+      searchBtn.addEventListener("click", handleSearch);
+      copySummaryBtn.addEventListener("click", handleCopySummary);
+
+      searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          handleSearch();
+        }
+      });
+    </script>
+  </body>
+</html>

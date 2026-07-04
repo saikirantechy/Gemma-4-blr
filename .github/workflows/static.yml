@@ -1,0 +1,63 @@
+# Deploys the Gemma AI Edge Skill Collection to GitHub Pages
+# Skills are in gallery/skills/ — this workflow also deploys the
+# root index.html landing page and .nojekyll so the site is
+# accessible at https://saikirantechy.github.io/Gemma-4-blr/
+
+name: Deploy static content to Pages
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'gallery/skills/**'
+      - 'gallery/index.html'
+      - 'gallery/shared/**'
+      - 'index.html'
+      - '.nojekyll'
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare deployment files
+        run: |
+          mkdir -p staging/skills staging/gallery
+          # Copy skills (for direct access at /skills/...)
+          rsync -r --exclude='.gitkeep' ./gallery/skills/ staging/skills/
+          # Copy gallery pages and shared assets (excluding skills subdir)
+          rsync -r --exclude='/skills/' ./gallery/ staging/gallery/
+          # Add skills metadata into gallery so relative paths resolve
+          mkdir -p staging/gallery/skills
+          cp ./gallery/skills/metadata.json staging/gallery/skills/metadata.json
+          # Copy root landing page and .nojekyll
+          cp index.html staging/
+          if [ -f .nojekyll ]; then cp .nojekyll staging/; fi
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'staging/'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

@@ -1,0 +1,418 @@
+<!--
+@license
+Copyright 2026 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==============================================================================
+-->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemma Send Email</title>
+    <meta
+      name="description"
+      content="Native Android intent skill for sending emails via the AI Edge Gallery app"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../../shared/css/main.css" />
+    <style>
+      .intent-flow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 16px;
+        background: var(--surface);
+        border-radius: 12px;
+        margin-bottom: 16px;
+      }
+      .intent-step {
+        background: rgba(66, 133, 244, 0.12);
+        border: 1px solid rgba(66, 133, 244, 0.25);
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--cyan);
+        text-align: center;
+        min-width: 100px;
+      }
+      .intent-arrow {
+        font-size: 20px;
+        color: var(--muted);
+      }
+      .code-block {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        font-size: 13px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-all;
+        color: #a5f3fc;
+        font-family: "Courier New", monospace;
+        line-height: 1.6;
+      }
+      .param-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      .param-table th {
+        text-align: left;
+        color: var(--cyan);
+        font-weight: 600;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      .param-table td {
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+      }
+      .param-table tr:last-child td {
+        border-bottom: none;
+      }
+      .param-table code {
+        color: var(--orange);
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header style="text-align: center; padding: 2rem 0">
+        <h1>📧 Gemma Send Email</h1>
+        <p class="text-muted">
+          Native Android intent skill for composing and sending emails via the
+          AI Edge Gallery app
+        </p>
+      </header>
+
+      <div class="card">
+        <h2>About This Skill</h2>
+        <p class="mb-3">
+          The <strong>Send Email</strong> skill is a <strong>Native Intent</strong> skill.
+          Instead of running JavaScript in a WebView, it uses the Android
+          <code>run_intent</code> tool to launch the device's email client directly.
+          The LLM (Gemma) extracts the recipient, subject, and body from your
+          natural language request and passes them to the native email composer.
+        </p>
+        <div class="mb-3">
+          <strong>How it works:</strong>
+          <div class="intent-flow">
+            <span class="intent-step">🗣️ User Prompt</span>
+            <span class="intent-arrow">→</span>
+            <span class="intent-step">🤖 Gemma parses intent</span>
+            <span class="intent-arrow">→</span>
+            <span class="intent-step">⚡ run_intent tool</span>
+            <span class="intent-arrow">→</span>
+            <span class="intent-step">📱 Native email app</span>
+          </div>
+        </div>
+        <div class="mb-3">
+          <strong>Example prompts you can use in the app:</strong>
+          <ul style="margin-left: 1.5rem; color: var(--muted); font-size: 0.9rem; line-height: 1.8;">
+            <li>✉️ "Send an email to john@example.com about the project update"</li>
+            <li>✉️ "Email Sarah about the meeting tomorrow: We need to finalize the agenda"</li>
+            <li>✉️ "Draft an email to my team: Subject: Sprint Review — Body: Please review the latest changes"</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card mt-3">
+        <h2>📝 Demo: Email Composer Preview</h2>
+        <p class="text-muted mb-3">
+          This form shows how the LLM structures the data before calling
+          <code>run_intent</code>. In the actual app, Gemma fills these fields
+          automatically from your natural language request.
+        </p>
+
+        <div class="mb-3">
+          <label
+            for="email-to"
+            style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+            >To:</label
+          >
+          <input
+            type="email"
+            id="email-to"
+            class="input"
+            placeholder="recipient@example.com"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            for="email-subject"
+            style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+            >Subject:</label
+          >
+          <input
+            type="text"
+            id="email-subject"
+            class="input"
+            placeholder="Email subject line"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            for="email-body"
+            style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+            >Body:</label
+          >
+          <textarea
+            id="email-body"
+            class="textarea"
+            placeholder="Type your email message here..."
+            rows="5"
+          ></textarea>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button id="preview-btn" class="btn btn-primary">
+            🔍 Preview run_intent JSON
+          </button>
+          <button id="fill-sample-btn" class="btn btn-secondary">
+            📄 Fill sample data
+          </button>
+          <button id="clear-btn" class="btn btn-secondary">
+            🗑️ Clear
+          </button>
+        </div>
+
+        <div id="json-preview-section" class="hidden mt-3">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+            >Generated <code>run_intent</code> payload:</label
+          >
+          <div class="code-block" id="json-output"></div>
+          <p class="text-muted mt-2" style="font-size: 0.8rem">
+            This is the exact JSON that Gemma passes to the
+            <code>run_intent</code> tool. The Android app then launches the
+            native email composer with these fields pre-filled.
+          </p>
+        </div>
+      </div>
+
+      <div class="card mt-3">
+        <h2>⚙️ Technical Details</h2>
+        <p class="mb-3">
+          The skill uses the Android <strong>Intent system</strong> via the
+          <code>run_intent</code> tool. The LLM calls this tool with two parameters:
+        </p>
+
+        <table class="param-table mb-3">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Description</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>intent</code></td>
+              <td>The native action to perform</td>
+              <td><code>send_email</code></td>
+            </tr>
+            <tr>
+              <td><code>parameters</code></td>
+              <td>JSON string with intent-specific fields</td>
+              <td><code>{ "extra_email": "...", ... }</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="mb-2"><strong>Email-specific fields in <code>parameters</code>:</strong></p>
+        <table class="param-table">
+          <thead>
+            <tr>
+              <th>Field</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>extra_email</code></td>
+              <td>String</td>
+              <td>The recipient email address</td>
+            </tr>
+            <tr>
+              <td><code>extra_subject</code></td>
+              <td>String</td>
+              <td>The email subject line</td>
+            </tr>
+            <tr>
+              <td><code>extra_text</code></td>
+              <td>String</td>
+              <td>The email body content</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="mt-3">
+          <p class="text-muted" style="font-size: 0.85rem">
+            📖 Developers: To add new native intents, see
+            <a
+              href="https://github.com/google-ai-edge/gallery/tree/main/Android/src/app/src/main/java/com/google/ai/edge/gallery/customtasks/agentchat/IntentHandler.kt"
+              target="_blank"
+              style="color: var(--cyan);"
+            >IntentHandler.kt</a>
+            in the AI Edge Gallery Android source.
+          </p>
+        </div>
+      </div>
+
+      <div class="card mt-3">
+        <h2>📋 Skill Instructions (SKILL.md)</h2>
+        <details>
+          <summary style="cursor: pointer; font-weight: 500">
+            Click to view the system prompt that Gemma uses for this skill
+          </summary>
+          <pre
+            id="system-prompt"
+            style="
+              background: var(--surface);
+              padding: 1rem;
+              border-radius: 8px;
+              margin-top: 1rem;
+              font-size: 0.85rem;
+              overflow-x: auto;
+              white-space: pre-wrap;
+            "
+          ></pre>
+        </details>
+      </div>
+    </div>
+
+    <script src="../../../../shared/js/utils.js"></script>
+    <script>
+      // Load SKILL.md system prompt
+      fetch("../SKILL.md")
+        .then((response) => response.text())
+        .then((text) => {
+          const promptEl = $("#system-prompt");
+          if (promptEl) {
+            promptEl.textContent = text;
+          }
+        })
+        .catch((error) => console.error("Error loading system prompt:", error));
+
+      // DOM references
+      const emailTo = $("#email-to");
+      const emailSubject = $("#email-subject");
+      const emailBody = $("#email-body");
+      const previewBtn = $("#preview-btn");
+      const fillSampleBtn = $("#fill-sample-btn");
+      const clearBtn = $("#clear-btn");
+      const jsonPreviewSection = $("#json-preview-section");
+      const jsonOutput = $("#json-output");
+
+      // Sample data sets
+      const samples = [
+        {
+          to: "john@example.com",
+          subject: "Project Update — Q2 Review",
+          body: "Hi John,\n\nI've attached the Q2 review documents. Please take a look and share your feedback by Friday.\n\nBest,\nGemma"
+        },
+        {
+          to: "sarah@company.com",
+          subject: "Meeting Tomorrow: Agenda Finalization",
+          body: "Hi Sarah,\n\nJust a reminder about our meeting tomorrow at 10 AM. We need to finalize the sprint agenda.\n\nSee you there,\nGemma"
+        },
+        {
+          to: "team@startup.io",
+          subject: "Sprint Review — Please Review Latest Changes",
+          body: "Team,\n\nThe latest sprint changes are ready for review. Please check the staging environment and report any issues.\n\nThanks,\nGemma"
+        }
+      ];
+      let sampleIndex = 0;
+
+      function buildRunIntentJson() {
+        const to = emailTo.value.trim();
+        const subject = emailSubject.value.trim();
+        const body = emailBody.value.trim();
+
+        return {
+          intent: "send_email",
+          parameters: {
+            extra_email: to || "(recipient required)",
+            extra_subject: subject || "(no subject)",
+            extra_text: body || "(no body)"
+          }
+        };
+      }
+
+      function showJsonPreview() {
+        const payload = buildRunIntentJson();
+        jsonOutput.textContent = JSON.stringify(payload, null, 2);
+        jsonPreviewSection.classList.remove("hidden");
+      }
+
+      function fillNextSample() {
+        const sample = samples[sampleIndex % samples.length];
+        sampleIndex++;
+        emailTo.value = sample.to;
+        emailSubject.value = sample.subject;
+        emailBody.value = sample.body;
+        GalleryUtils.toast.success("Sample data filled");
+        // Auto-show the preview
+        showJsonPreview();
+      }
+
+      function clearForm() {
+        emailTo.value = "";
+        emailSubject.value = "";
+        emailBody.value = "";
+        sampleIndex = 0;
+        jsonPreviewSection.classList.add("hidden");
+        GalleryUtils.toast.success("Form cleared");
+      }
+
+      // Event listeners
+      previewBtn.addEventListener("click", () => {
+        const to = emailTo.value.trim();
+        const subject = emailSubject.value.trim();
+        const body = emailBody.value.trim();
+        if (!to && !subject && !body) {
+          GalleryUtils.toast.error("Fill in at least one field first, or use 'Fill sample data'");
+          return;
+        }
+        showJsonPreview();
+        GalleryUtils.toast.success("Intent payload generated");
+      });
+
+      fillSampleBtn.addEventListener("click", fillNextSample);
+      clearBtn.addEventListener("click", clearForm);
+
+      // Fill first sample on load (auto-fill without preview)
+      const initialSample = samples[0];
+      emailTo.value = initialSample.to;
+      emailSubject.value = initialSample.subject;
+      emailBody.value = initialSample.body;
+      sampleIndex = 1;
+    </script>
+  </body>
+</html>

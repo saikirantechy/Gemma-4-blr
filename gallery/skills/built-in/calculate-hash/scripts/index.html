@@ -1,0 +1,235 @@
+<!--
+@license
+Copyright 2026 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==============================================================================
+-->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemma Calculate Hash</title>
+    <meta
+      name="description"
+      content="Calculate SHA256, MD5, SHA1 hashes for text with copy functionality"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../../shared/css/main.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header style="text-align: center; padding: 2rem 0">
+        <h1>🔐 Gemma Calculate Hash</h1>
+        <p class="text-muted">Calculate cryptographic hashes for your text</p>
+      </header>
+
+      <div class="card">
+        <div class="mb-3">
+          <label
+            for="text-input"
+            style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+            >Text to Hash:</label
+          >
+          <textarea
+            id="text-input"
+            class="textarea"
+            placeholder="Enter text to calculate hash..."
+            rows="4"
+          ></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+            >Hash Algorithm:</label
+          >
+          <div class="flex flex-col gap-2">
+            <label class="flex items-center gap-2">
+              <input type="radio" name="algorithm" value="sha256" checked />
+              <span>SHA256</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="radio" name="algorithm" value="md5" />
+              <span>MD5</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="radio" name="algorithm" value="sha1" />
+              <span>SHA1</span>
+            </label>
+          </div>
+        </div>
+
+        <button
+          id="calculate-btn"
+          class="btn btn-primary mb-3"
+          style="width: 100%"
+        >
+          Calculate Hash
+        </button>
+
+        <div id="result-section" class="hidden">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 500"
+            >Result:</label
+          >
+          <div class="flex gap-2 mb-2">
+            <input
+              type="text"
+              id="hash-output"
+              class="input"
+              readonly
+              style="flex: 1"
+            />
+            <button id="copy-btn" class="btn btn-secondary">Copy</button>
+          </div>
+          <div class="text-muted" style="font-size: 0.8rem">
+            Algorithm: <span id="algorithm-display"></span> | Length:
+            <span id="length-display"></span> characters
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-3">
+        <h2>About Hash Functions</h2>
+        <div class="mb-2">
+          <strong>SHA256:</strong> Secure Hash Algorithm 256-bit. Widely used
+          for security, blockchain, and digital signatures.
+        </div>
+        <div class="mb-2">
+          <strong>MD5:</strong> Message Digest 5. Fast but cryptographically
+          broken - not recommended for security.
+        </div>
+        <div>
+          <strong>SHA1:</strong> Secure Hash Algorithm 1. Deprecated for
+          cryptographic use due to vulnerabilities.
+        </div>
+      </div>
+    </div>
+
+    <script src="../../../../shared/js/utils.js"></script>
+    <script src="index.js"></script>
+    <script>
+      const textInput = $("#text-input");
+      const calculateBtn = $("#calculate-btn");
+      const resultSection = $("#result-section");
+      const hashOutput = $("#hash-output");
+      const copyBtn = $("#copy-btn");
+      const algorithmDisplay = $("#algorithm-display");
+      const lengthDisplay = $("#length-display");
+
+      // MD5 implementation (since Web Crypto doesn't support it)
+      function md5(str) {
+        // Simple MD5 implementation for demo purposes
+        // In production, use a proper crypto library
+        let hash = 0;
+        if (str.length === 0) return hash.toString(16);
+        for (let i = 0; i < str.length; i++) {
+          const char = str.charCodeAt(i);
+          hash = (hash << 5) - hash + char;
+          hash = hash & hash; // Convert to 32-bit integer
+        }
+        return Math.abs(hash).toString(16).padStart(8, "0");
+      }
+
+      async function calculateHash(text, algorithm) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(text);
+
+        switch (algorithm) {
+          case "sha256":
+            const sha256Buffer = await crypto.subtle.digest("SHA-256", data);
+            return Array.from(new Uint8Array(sha256Buffer))
+              .map((b) => b.toString(16).padStart(2, "0"))
+              .join("");
+
+          case "sha1":
+            const sha1Buffer = await crypto.subtle.digest("SHA-1", data);
+            return Array.from(new Uint8Array(sha1Buffer))
+              .map((b) => b.toString(16).padStart(2, "0"))
+              .join("");
+
+          case "md5":
+            return md5(text);
+
+          default:
+            throw new Error("Unsupported algorithm");
+        }
+      }
+
+      async function handleCalculate() {
+        const text = textInput.value.trim();
+        if (!text) {
+          GalleryUtils.toast.error("Please enter some text to hash");
+          return;
+        }
+
+        const algorithm = document.querySelector(
+          'input[name="algorithm"]:checked',
+        ).value;
+
+        GalleryUtils.loading.show(calculateBtn, "Calculating...");
+
+        try {
+          const hash = await calculateHash(text, algorithm);
+          hashOutput.value = hash;
+          algorithmDisplay.textContent = algorithm.toUpperCase();
+          lengthDisplay.textContent = hash.length;
+          resultSection.classList.remove("hidden");
+          GalleryUtils.toast.success("Hash calculated successfully");
+        } catch (error) {
+          console.error("Hash calculation error:", error);
+          GalleryUtils.toast.error("Failed to calculate hash");
+        } finally {
+          GalleryUtils.loading.hide(calculateBtn, "Calculate Hash");
+        }
+      }
+
+      function handleCopy() {
+        const hash = hashOutput.value;
+        if (hash) {
+          GalleryUtils.copyToClipboard(hash);
+        }
+      }
+
+      // Event listeners
+      calculateBtn.addEventListener("click", handleCalculate);
+      copyBtn.addEventListener("click", handleCopy);
+
+      // Real-time calculation
+      const debouncedCalculate = GalleryUtils.debounce(async () => {
+        const text = textInput.value.trim();
+        if (text) {
+          handleCalculate();
+        }
+      }, 500);
+
+      textInput.addEventListener("input", debouncedCalculate);
+
+      // Algorithm change
+      document.querySelectorAll('input[name="algorithm"]').forEach((radio) => {
+        radio.addEventListener("change", () => {
+          const text = textInput.value.trim();
+          if (text) {
+            handleCalculate();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+<!--
+Template: Gemma AI Edge Skill — JS WebView Module
+Replace all [PLACEHOLDERS] before use.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Skill Name]</title>
+    <!-- Add CDN libraries here if needed, e.g.: -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/..."></script> -->
+</head>
+<body>
+    <!-- Hidden rendering surfaces (add if your skill needs DOM elements) -->
+    <!-- <div id="render-container" style="display:none;"></div> -->
+
+    <script>
+        /**
+         * [Skill Name] — JS WebView Module
+         *
+         * This function is called by the AI Edge Gallery app when the LLM
+         * invokes the run_js tool. It receives parameters from the LLM,
+         * executes your logic, and returns a result for the LLM to use.
+         *
+         * @param {string} data   - Stringified JSON of parameters from the LLM
+         * @param {string} secret - API key/secret (only if require-secret: true in SKILL.md)
+         *
+         * @returns {string} Stringified JSON with one of:
+         *   { result: string }                     — text result
+         *   { result: string, image: { base64 } }  — text + image
+         *   { result: string, webview: { url, aspectRatio } } — text + inline webview
+         *   { error: string }                      — error message shown to user
+         */
+        window['ai_edge_gallery_get_result'] = async function(data, secret) {
+            try {
+                // 1. Parse parameters from LLM
+                const params = JSON.parse(data);
+
+                // 2. Validate required parameters
+                // const myParam = params.myParam;
+                // if (!myParam) throw new Error('myParam is required.');
+
+                console.log('[Skill Name]: received params', params);
+
+                // 3. Execute your logic here
+                // const result = await yourImplementation(params, secret);
+
+                // 4. Return success result
+                return JSON.stringify({
+                    result: 'Replace this with your actual result string',
+                    // image: { base64: 'base64encodedImageString' },    // optional
+                    // webview: { url: 'webview.html', aspectRatio: 1.5 } // optional
+                });
+
+            } catch (err) {
+                console.error('[Skill Name] error:', err);
+                return JSON.stringify({
+                    error: `[Skill Name] failed: ${err.message}`
+                });
+            }
+        };
+
+        // ── Helper functions ──────────────────────────────────────────────────
+
+        /**
+         * Example helper — replace or delete as needed.
+         * @param {object} params - Parsed parameters
+         * @param {string} secret - Secret/API key if applicable
+         */
+        async function yourImplementation(params, secret) {
+            // Your implementation here
+            // Can use: fetch(), DOMParser, Canvas API, WebAssembly, etc.
+            return 'result';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!--
+@license
+Copyright 2026 Google LLC
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==============================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemma Link Summarizer</title>
+</head>
+<body>
+    <script>
+        /**
+         * Gemma Link Summarizer — JS Module
+         *
+         * Fetches a webpage via CORS proxy (allorigins.win), strips HTML noise,
+         * extracts the readable article text, and returns it to Gemma for
+         * summarization.
+         *
+         * Parameters (via JSON data string from LLM):
+         *   url {string} - The full URL of the page to fetch. Required.
+         *
+         * Returns JSON:
+         *   { result: string }  — page title + cleaned article text
+         *   { error: string }   — human-readable error message
+         */
+        window['ai_edge_gallery_get_result'] = async function(data) {
+            try {
+                const params = JSON.parse(data);
+                let url = params.url;
+
+                if (!url) throw new Error('A URL is required to fetch content.');
+
+                // Auto-prepend protocol if missing
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+
+                console.log('Gemma Link Summarizer: fetching', url);
+
+                // Use allorigins CORS proxy — works from mobile WebViews
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+
+                const response = await fetch(proxyUrl, {
+                    signal: AbortSignal.timeout(12000), // 12s timeout
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Proxy returned HTTP ${response.status}. The page may be unavailable.`);
+                }
+
+                const json = await response.json();
+                const html = json.contents;
+
+                if (!html || html.trim().length === 0) {
+                    throw new Error('No content returned. The page may require a login, be behind a paywall, or block scrapers.');
+                }
+
+                // Parse HTML and remove noise
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                // Remove non-content elements
+                const noiseSelectors = [
+                    'script', 'style', 'nav', 'footer', 'header', 'aside',
+                    'iframe', 'noscript', 'form', 'button', '.ad', '.ads',
+                    '.advertisement', '.sidebar', '.cookie-banner', '.popup',
+                    '[aria-hidden="true"]', '.social-share', '.comments',
+                ];
+                noiseSelectors.forEach(sel => {
+                    doc.querySelectorAll(sel).forEach(el => el.remove());
+                });
+
+                // Try to target the article body specifically
+                const contentSelectors = [
+                    'article',
+                    'main',
+                    '[role="main"]',
+                    '.article-body',
+                    '.article-content',
+                    '.post-content',
+                    '.entry-content',
+                    '.story-body',
+                    '#article-body',
+                    '#content',
+                    '.content',
+                ];
+                let contentEl = null;
+                for (const sel of contentSelectors) {
+                    contentEl = doc.querySelector(sel);
+                    if (contentEl) break;
+                }
+                const source = contentEl || doc.body;
+
+                let text = source ? (source.innerText || source.textContent || '') : '';
+
+                // Clean whitespace
+                text = text
+                    .replace(/[ \t]{2,}/g, ' ')
+                    .replace(/\n{3,}/g, '\n\n')
+                    .trim();
+
+                // Cap content to protect model context window
+                const MAX_CHARS = 4500;
+                const wasTruncated = text.length > MAX_CHARS;
+                if (wasTruncated) {
+                    text = text.substring(0, MAX_CHARS) + '\n\n... [Content truncated — summarizing first portion]';
+                }
+
+                if (!text || text.length < 80) {
+                    throw new Error(
+                        'Could not extract readable text from this page. ' +
+                        'It may use JavaScript rendering (SPA), be behind a login, or be a media-only page. ' +
+                        'Try pasting the article text directly.'
+                    );
+                }
+
+                const pageTitle = doc.querySelector('title')?.textContent?.trim() || 'Untitled Page';
+                const metaDesc  = doc.querySelector('meta[name="description"]')?.getAttribute('content') || '';
+
+                // Build structured output for Gemma
+                let result = `--- PAGE TITLE ---\n${pageTitle}\n`;
+                if (metaDesc) result += `--- META DESCRIPTION ---\n${metaDesc}\n`;
+                result += `--- SOURCE URL ---\n${url}\n`;
+                result += `--- ARTICLE CONTENT ---\n${text}`;
+
+                return JSON.stringify({ result });
+
+            } catch (err) {
+                console.error('Gemma Link Summarizer error:', err);
+                return JSON.stringify({
+                    error: `Could not fetch the URL: ${err.message} — You can paste the article text directly and I will summarize it for you.`
+                });
+            }
+        };
+    </script>
+</body>
+</html>

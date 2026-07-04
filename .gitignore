@@ -1,0 +1,32 @@
+# Windows reserved names
+nul
+NUL
+Nul
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Node
+node_modules/
+
+# Gradle
+.gradle/
+build/
+
+# Python
+__pycache__/
+*.pyc
+
+# KiloCode / Refact
+.kilocode/
+.refact/
+
+# Snapshots
+.snapshots/
