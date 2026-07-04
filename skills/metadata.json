@@ -1,0 +1,267 @@
+{
+  "skills": [
+    {
+      "id": "gemma-pocket-assistant",
+      "name": "Gemma Pocket Assistant",
+      "description": "AI-powered personal assistant for on-device tasks.",
+      "type": "Text",
+      "category": "Assistant",
+      "icon": "🤖",
+      "path": "gemma-pocket-assistant",
+      "tags": ["assistant", "productivity", "AI"],
+      "installUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-pocket-assistant/SKILL.md",
+      "viewUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-pocket-assistant/SKILL.md",
+      "features": [
+        "Summarizes conversations and task prompts",
+        "Generates code snippets and explanations",
+        "Provides on-device quick answer workflows"
+      ],
+      "usage": "Open the skill page from the gallery and follow the example prompts to interact with the assistant.",
+      "examplePrompts": [
+        "Create a daily study schedule",
+        "Summarize my meeting notes",
+        "Draft a message for a teammate"
+      ],
+      "techStack": [
+        "HTML",
+        "JavaScript",
+        "Markdown skill manifest",
+        "Browser download API"
+      ]
+    },
+    {
+      "id": "gemma-study-buddy",
+      "name": "Gemma Study Buddy",
+      "description": "AI study companion for learning and research.",
+      "type": "Text",
+      "category": "Education",
+      "icon": "📚",
+      "path": "gemma-study-buddy",
+      "tags": ["study", "education", "research"],
+      "installUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-study-buddy/SKILL.md",
+      "viewUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-study-buddy/SKILL.md",
+      "features": [
+        "Generates flashcards and quizzes",
+        "Summarizes class materials",
+        "Helps with test preparation prompts"
+      ],
+      "usage": "Open the skill page and enter a topic or question to get learning guidance, summaries, and study plans.",
+      "examplePrompts": [
+        "Explain photosynthesis for high school",
+        "Create flashcards for JavaScript basics",
+        "Summarize this research article"
+      ],
+      "techStack": [
+        "HTML",
+        "JavaScript",
+        "AI prompt templates",
+        "Markdown metadata"
+      ]
+    },
+    {
+      "id": "gemma-code-helper",
+      "name": "Gemma Code Helper",
+      "description": "AI coding assistant for development tasks.",
+      "type": "Text",
+      "category": "Development",
+      "icon": "💻",
+      "path": "gemma-code-helper",
+      "tags": ["coding", "development", "programming"],
+      "installUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-code-helper/SKILL.md",
+      "viewUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-code-helper/SKILL.md",
+      "features": [
+        "Generates code examples",
+        "Explains syntax and algorithms",
+        "Fixes bugs and refactors code"
+      ],
+      "usage": "Use the skill page to enter a programming problem or ask for a code transformation.",
+      "examplePrompts": [
+        "Refactor this function in Python",
+        "Write a responsive HTML form",
+        "Explain the difference between map and reduce"
+      ],
+      "techStack": ["HTML", "JavaScript", "Markdown-based skill design"]
+    },
+    {
+      "id": "gemma-translator",
+      "name": "Gemma Translator",
+      "description": "Multilingual translation powered by AI.",
+      "type": "Text",
+      "category": "Language",
+      "icon": "🌐",
+      "path": "gemma-translator",
+      "tags": ["translation", "language", "multilingual"],
+      "installUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-translator/SKILL.md",
+      "viewUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-translator/SKILL.md",
+      "features": [
+        "Supports many languages",
+        "Keeps tone and context",
+        "Converts phrases, paragraphs, and documents"
+      ],
+      "usage": "Open the skill and paste text to translate; select source and target languages as needed.",
+      "examplePrompts": [
+        "Translate this email to Spanish",
+        "Rewrite this paragraph in Japanese",
+        "Convert onboarding text to French"
+      ],
+      "techStack": [
+        "HTML",
+        "JavaScript",
+        "Prompt engineering",
+        "Language AI workflows"
+      ]
+    },
+    {
+      "id": "gemma-meeting-notes",
+      "name": "Gemma Meeting Notes",
+      "description": "AI-powered meeting note taker and summarizer.",
+      "type": "Text",
+      "category": "Productivity",
+      "icon": "📝",
+      "path": "gemma-meeting-notes",
+      "tags": ["meetings", "notes", "summary"],
+      "installUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-meeting-notes/SKILL.md",
+      "viewUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-meeting-notes/SKILL.md",
+      "features": [
+        "Summarizes meeting transcripts",
+        "Extracts action items",
+        "Generates agendas and follow-ups"
+      ],
+      "usage": "Use the skill page to paste notes or transcript text and let the assistant generate concise summaries and task lists.",
+      "examplePrompts": [
+        "Summarize this meeting discussion",
+        "List the action items from this transcript",
+        "Create a follow-up email"
+      ],
+      "techStack": [
+        "HTML",
+        "JavaScript",
+        "AI summarization",
+        "Markdown skill manifest"
+      ]
+    },
+    {
+      "id": "gemma-link-summarizer",
+      "name": "Gemma Link Summarizer",
+      "description": "Summarize web content and articles.",
+      "type": "Text",
+      "category": "Content",
+      "icon": "🔗",
+      "path": "gemma-link-summarizer",
+      "tags": ["summary", "web", "content"],
+      "installUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-link-summarizer/SKILL.md",
+      "viewUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/gemma-link-summarizer/SKILL.md",
+      "features": [
+        "Extracts article keypoints",
+        "Creates short summaries",
+        "Analyzes web page content"
+      ],
+      "usage": "Open the skill page and paste a link or page content to receive a crisp summary.",
+      "examplePrompts": [
+        "Summarize this news article",
+        "What are the main takeaways from this blog post?",
+        "Create a short executive summary"
+      ],
+      "techStack": [
+        "HTML",
+        "JavaScript",
+        "Web scraping helpers",
+        "Prompt engineering"
+      ]
+    },
+    {
+      "id": "gemma-kitchen-adventure",
+      "name": "Gemma Kitchen Adventure",
+      "description": "Text-based adventure game in a sentient kitchen world.",
+      "type": "Text",
+      "category": "Games",
+      "icon": "🍳",
+      "path": "kitchen-adventure",
+      "tags": ["adventure", "game", "text-based"],
+      "installUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/kitchen-adventure/SKILL.md",
+      "viewUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/kitchen-adventure/SKILL.md",
+      "features": [
+        "Interactive narrative game",
+        "Kitchen-themed world building",
+        "Prompt-driven story progression"
+      ],
+      "usage": "Open the skill to play the adventure and use natural language actions to explore, collect, and solve puzzles.",
+      "examplePrompts": [
+        "Look around the kitchen",
+        "Take the key from the drawer",
+        "Use the mixing bowl on the counter"
+      ],
+      "techStack": [
+        "HTML",
+        "JavaScript",
+        "AI game prompts",
+        "Markdown skill manifest"
+      ]
+    },
+    {
+      "id": "gemma-calculate-hash",
+      "name": "Gemma Calculate Hash",
+      "description": "Calculate SHA256, MD5, SHA1 hashes for text.",
+      "type": "JS",
+      "category": "Utilities",
+      "icon": "🔐",
+      "path": "calculate-hash",
+      "tags": ["hash", "security", "crypto"],
+      "installUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/calculate-hash/SKILL.md",
+      "viewUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/calculate-hash/SKILL.md",
+      "features": [
+        "Supports SHA256, MD5, SHA1",
+        "Copies results instantly",
+        "Validates text and URLs"
+      ],
+      "usage": "Open the skill page and enter a string to generate one or more hash values instantly.",
+      "examplePrompts": [
+        "Hash this password using SHA256",
+        "Generate an MD5 for this text",
+        "Compare two hashes"
+      ],
+      "techStack": [
+        "HTML",
+        "JavaScript",
+        "Browser crypto APIs",
+        "Markdown skill metadata"
+      ]
+    },
+    {
+      "id": "gemma-query-wikipedia-plus",
+      "name": "Gemma Query Wikipedia Plus",
+      "description": "Advanced Wikipedia search with summaries and infoboxes.",
+      "type": "API",
+      "category": "Search",
+      "icon": "📖",
+      "path": "query-wikipedia-plus",
+      "tags": ["wikipedia", "search", "knowledge"],
+      "installUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/query-wikipedia-plus/SKILL.md",
+      "viewUrl": "https://saikirantechy.github.io/Gemma-4-blr/skills/built-in/query-wikipedia-plus/SKILL.md",
+      "features": [
+        "Searches Wikipedia with enhanced context",
+        "Generates summaries and fact boxes",
+        "Supports multiple languages"
+      ],
+      "usage": "Open the skill page and enter a topic to retrieve a compact summary with optional infobox details.",
+      "examplePrompts": [
+        "Explain the history of the Eiffel Tower",
+        "Show the infobox for Nikola Tesla",
+        "Summarize Albert Einstein's biography"
+      ],
+      "techStack": ["HTML", "JavaScript", "Wikipedia API", "Content extraction"]
+    }
+  ],
+  "categories": [
+    "Assistant",
+    "Education",
+    "Development",
+    "Language",
+    "Productivity",
+    "Content",
+    "Games",
+    "Utilities",
+    "Search"
+  ],
+  "types": ["Text", "JS", "API", "Webview", "Image", "Camera", "Native"]
+}
